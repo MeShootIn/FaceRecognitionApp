@@ -4,7 +4,7 @@
 
 import React from 'react';
 //import ReactDOM from 'react-dom';
-
+/*
 import {getLandmarks, loadModels} from './faceapi';
 import FaceDraw from './facedraw';
 import ImageSelector from './tool';
@@ -13,14 +13,16 @@ import face001 from './face001.jpg';
 import face002 from './face002.jpg';
 import face003 from './face003.jpg';
 import face004 from './face004.jpg';
-
+*/
 // **********************************************
 // Const
 // **********************************************
 
+/*
 const WAIT_Y_MIN = 60;
 const WAIT_Y_MAX = 80;
 const WAIT_STEP = 2;
+*/
 
 // **********************************************
 // Vars
@@ -32,6 +34,7 @@ const WAIT_STEP = 2;
 
 
 class App extends React.Component {
+  /*
   constructor(props) {
     super(props);
     this.m_mount = null;
@@ -161,9 +164,22 @@ class App extends React.Component {
     //this.setState({imagSrc: imgSelected});
     this.startDetect(index);
   }
+  */
 
   // *********************************************
+  // Write all components to jsxRender
   render() {
+    const jsxRender = <div className="App">
+      <header className="App-header">
+
+      </header>
+    </div>
+
+    return jsxRender;
+  } // end render
+
+  /*
+  oldRender() {
     const styleImage = {
       display: 'none'
     };
@@ -189,10 +205,8 @@ class App extends React.Component {
 
     return jsxRender;
   } // end render
-
+  */
 
 } // end App
-
-
 
 export default App;
