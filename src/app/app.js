@@ -16,6 +16,7 @@ import face004 from './face004.jpg';
 */
 
 import NameApp from './components/nameApp'
+import Description from './components/description'
 import Gallery from './components/gallery'
 
 // **********************************************
@@ -176,6 +177,7 @@ class App extends React.Component {
     const jsxRender = <div className="App">
       <header className="App-header">
         <NameApp />
+        <Description />
         <Gallery />
       </header>
     </div>
