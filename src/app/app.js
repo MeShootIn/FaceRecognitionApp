@@ -14,6 +14,9 @@ import face002 from './face002.jpg';
 import face003 from './face003.jpg';
 import face004 from './face004.jpg';
 */
+
+import NameApp from './components/nameApp'
+
 // **********************************************
 // Const
 // **********************************************
@@ -171,7 +174,7 @@ class App extends React.Component {
   render() {
     const jsxRender = <div className="App">
       <header className="App-header">
-
+        <NameApp />
       </header>
     </div>
 
