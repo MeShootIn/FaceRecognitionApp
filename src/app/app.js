@@ -18,6 +18,7 @@ import face004 from './face004.jpg';
 import NameApp from './components/nameApp'
 import Description from './components/description'
 import Gallery from './components/gallery'
+import Output from './components/output'
 
 // **********************************************
 // Const
@@ -179,6 +180,7 @@ class App extends React.Component {
         <NameApp />
         <Description />
         <Gallery />
+        <Output />
       </header>
     </div>
 
