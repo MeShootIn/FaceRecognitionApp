@@ -8,11 +8,6 @@ import React from 'react';
 import {getLandmarks, loadModels} from './faceapi';
 import FaceDraw from './facedraw';
 import ImageSelector from './tool';
-
-import face001 from './face001.jpg';
-import face002 from './face002.jpg';
-import face003 from './face003.jpg';
-import face004 from './face004.jpg';
 */
 
 import NameApp from './components/nameApp'

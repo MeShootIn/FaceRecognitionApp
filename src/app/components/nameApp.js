@@ -1,20 +1,16 @@
 import React from "react";
-import { Container } from 'react-bootstrap';
+import { Container, Jumbotron } from 'react-bootstrap';
 
 class NameApp extends React.Component {
     render() {
-        const styleHeader = {
-            backgroundColor: "White",
-        };
-
         return (
-            <Container fluid>
-                <div class="row-fuild text-center">
-                    <h1 style={styleHeader}>
-                        Face Recognition App
+            <Jumbotron fluid className="bg-info text-white">
+                <Container>
+                    <h1 class="display-1">
+                        SeriesFace
                     </h1>
-                </div>
-            </Container>
+                </Container>
+            </Jumbotron>
         );
     }
 }
