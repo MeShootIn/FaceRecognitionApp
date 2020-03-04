@@ -14,6 +14,7 @@ import NameApp from './components/nameApp'
 import Description from './components/description'
 import Gallery from './components/gallery'
 import Output from './components/output'
+import { Container, Row } from 'react-bootstrap';
 
 // **********************************************
 // Const
@@ -51,16 +52,18 @@ class App extends React.Component {
   // *********************************************
   // Write all components to jsxRender
   render() {
-    const jsxRender = <div className="App">
-      <header className="App-header">
+    
+
+    return (
+      <div>
         <NameApp />
-        <Description />
+        <div class="d-flex justify-content-center">
+          <Description />
+        </div>
         <Gallery />
         <Output />
-      </header>
-    </div>
-
-    return jsxRender;
+      </div>
+    );
   } // end render
 
 } // end App

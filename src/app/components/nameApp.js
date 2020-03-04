@@ -4,7 +4,7 @@ import { Container, Jumbotron } from 'react-bootstrap';
 class NameApp extends React.Component {
     render() {
         return (
-            <Jumbotron fluid className="bg-info text-white">
+            <Jumbotron fluid className="bg-info text-white text-center">
                 <Container>
                     <h1 class="display-1">
                         SeriesFace
