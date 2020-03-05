@@ -10,11 +10,11 @@ import FaceDraw from './facedraw';
 import ImageSelector from './tool';
 */
 
-import NameApp from './components/nameApp'
-import Description from './components/description'
-import Gallery from './components/gallery'
-import Output from './components/output'
-import { Container, Row } from 'react-bootstrap';
+import NameApp from './components/nameApp';
+import Description from './components/description';
+import Gallery from './components/gallery';
+import Output from './components/output';
+import Upload from './components/upload';
 
 // **********************************************
 // Const
@@ -61,6 +61,7 @@ class App extends React.Component {
           <Description />
         </div>
         <Gallery />
+        <Upload />
         <Output />
       </div>
     );
