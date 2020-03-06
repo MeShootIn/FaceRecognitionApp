@@ -10,27 +10,27 @@ class Gallery extends React.Component {
     render() {
         return (
             <Container>
-            <Row>
-                <Col md='1'></Col>
+                <Row>
+                    <Col md='1'></Col>
 
-                <Col md='2'>
-                    <Image src={face001} thumbnail/>
-                </Col>
-                <Col md='2'>
-                    <Image src={face002} thumbnail/>
-                </Col>
-                <Col md='2'>
-                    <Image src={face003} thumbnail/>
-                </Col>
-                <Col md='2'>
-                    <Image src={face004} thumbnail/>
-                </Col>
-                <Col md='2'>
-                    <Image src={face001} thumbnail/>
-                </Col>
+                    <Col md='2'>
+                        <Image src={face001} thumbnail />
+                    </Col>
+                    <Col md='2'>
+                        <Image src={face002} thumbnail />
+                    </Col>
+                    <Col md='2'>
+                        <Image src={face003} thumbnail />
+                    </Col>
+                    <Col md='2'>
+                        <Image src={face004} thumbnail />
+                    </Col>
+                    <Col md='2'>
+                        <Image src={face001} thumbnail />
+                    </Col>
 
-                <Col md='1'></Col>
-            </Row>
+                    <Col md='1'></Col>
+                </Row>
             </Container>
         );
     }

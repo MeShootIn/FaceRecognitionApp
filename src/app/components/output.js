@@ -7,7 +7,7 @@ import face002 from '../../resourсes/face002.jpg';
 class Output extends React.Component {
     render() {
         return (
-            <Container style={{background: "#FFFFFF"}}>
+            <Container id="output" style={{background: "#FFFFFF"}}>
                 <div class="p-5 text-center">
                     <Row>
                         <Col md='2'></Col>
