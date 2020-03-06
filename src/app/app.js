@@ -10,11 +10,11 @@ import FaceDraw from './facedraw';
 import ImageSelector from './tool';
 */
 
-import NameApp from './components/nameApp';
+import Navbar from './components/navbar';
 import Description from './components/description';
 import Gallery from './components/gallery';
-import Output from './components/output';
 import Upload from './components/upload';
+import Output from './components/output';
 
 // **********************************************
 // Const
@@ -56,10 +56,8 @@ class App extends React.Component {
 
     return (
       <div>
-        <NameApp />
-        <div class="d-flex justify-content-center">
-          <Description />
-        </div>
+        <Navbar />
+        <Description />
         <Gallery />
         <Upload />
         <Output />

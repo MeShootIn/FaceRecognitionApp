@@ -1,15 +1,15 @@
 import React from "react";
-import { Container } from 'react-bootstrap';
+import RU from "./texts";
 
 class Description extends React.Component {
     render() {
         return (
-            <div class="w-50 text-center border rounded shadow p-3 mb-5 bg-white rounded text-info" style={{ fontSize: 22 }}>
-                <p>
-                    Have you ever imagined yourself as a character in a popular series?
-                    What star you could easily replace on the set? Find out now!
-                    Just upload image of your face and we will show you a character that you looks like.
-                </p>
+            <div className="d-flex justify-content-center">
+                <div className="w-50 text-center border rounded shadow p-3 mt-3 mb-5 bg-white rounded" style={{ fontSize: 22 }}>
+                    <p>
+                        {EN.description}
+                    </p>
+                </div>
             </div>
         );
     }
