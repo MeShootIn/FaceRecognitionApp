@@ -1,5 +1,5 @@
 import React from "react";
-import RU from "./texts";
+import EN from "./texts";
 
 class Description extends React.Component {
     render() {
