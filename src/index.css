@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.btn-twitter:hover {
+  color: #00acee;
+}
+
+.btn-facebook:hover {
+  color: #3b5998;
+}
+
+.btn-reddit:hover {
+  color: #FF5700;
+}
+
+.btn-google-plus-g:hover {
+  color: #db4a39;
+}
+
+.btn-vk:hover {
+  color: #597da3;
+}
+
+footer {
+  background-color: #3f3f3f;
+}

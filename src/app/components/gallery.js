@@ -9,7 +9,7 @@ import face004 from '../../resourсes/face004.jpg';
 class Gallery extends React.Component {
     render() {
         return (
-            <Container>
+            <Container className="mt-5">
                 <Row>
                     <Col md='1'></Col>
 
