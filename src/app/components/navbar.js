@@ -2,16 +2,21 @@ import React from "react";
 import Content from "./content";
 
 class Navbar extends React.Component {
-    kek() {
+    switchToRU() {
+        Content.changeLanguage("RU");
+    }
 
+    switchToEN() {
+        Content.changeLanguage("EN");
     }
 
     render() {
         return (
             <nav className="navbar navbar-expand navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <a class="navbar-brand" href="#">
-                        <img src="favicon.svg" width="32" height="32" focusable="false" class="d-inline-block align-top" />
+                    <a class="navbar-brand" href="/#">
+                        <img src="favicon.svg" width="32" height="32" focusable="false" class="d-inline-block align-top"
+                            alt="Icon" />
                         SeriesFace
                     </a>
 
@@ -21,18 +26,12 @@ class Navbar extends React.Component {
 
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <span className="nav-link">
-                                    {Content.language}
-                                </span>
-                            </li>
-
                             <li className="nav-item active">
-                                <a className="nav-link" href="#">RU</a>
+                                <button className="btn nav-link" onClick={this.switchToRU}>RU</button>
                             </li>
 
                             <li className="nav-item">
-                                <a className="nav-link" href="#">EN</a>
+                                <button className="btn nav-link" onClick={this.switchToEN}>EN</button>
                             </li>
                         </ul>
                     </div>

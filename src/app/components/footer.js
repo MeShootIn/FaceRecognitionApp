@@ -4,7 +4,7 @@ import Content from "./content";
 class Footer extends React.Component {
     shareTwitter() {
         window.open("https://twitter.com/share?text=" + Content.description, "Twitter share",
-        "width=420,height=430,resizable=yes,scrollbars=yes,status=yes");
+            "width=420,height=430,resizable=yes,scrollbars=yes,status=yes");
     }
 
     // Доделать
@@ -56,7 +56,7 @@ class Footer extends React.Component {
 
                     <div className="col-12">
                         <p className="text-white">
-                            We do not store uploaded photos. All photos are deleted after recognition. 
+                            We do not store uploaded photos. All photos are deleted after recognition.
                             The photo will be saved only if you want to share it.
                         </p>
                         <p className="text-white">

@@ -34,4 +34,6 @@ code {
 
 footer {
   background-color: #3f3f3f;
+  border-top: solid silver;
+  padding-top: 10px;
 }

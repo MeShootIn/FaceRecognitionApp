@@ -4,8 +4,9 @@ import Navbar from './components/navbar';
 import Description from './components/description';
 import Gallery from './components/gallery';
 import Upload from './components/upload';
-import Input from './components/input';
+import Result from './components/result';
 import Footer from './components/footer';
+import Instruction from './components/instruction';
 
 
 class App extends React.Component {
@@ -16,7 +17,8 @@ class App extends React.Component {
         <Description />
         <Gallery />
         <Upload />
-        <Input />
+        <Result />
+        <Instruction />
         <Footer />
       </div>
     );
