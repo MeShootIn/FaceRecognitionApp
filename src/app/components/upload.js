@@ -24,8 +24,15 @@ class Upload extends React.Component {
 
     handleChange(event) {
         event.preventDefault();
+        
+        if (this.fileInput.current.files.length !== 1) {
+            return;
+        }
 
         let file = this.fileInput.current.files[0];
+        let label = document.getElementById("customLabel");
+
+        label.innerHTML = file.name;
 
         if (Upload.fileTypes.includes(file.type)) {
             document.getElementById("card").className = "card border-success";
@@ -49,12 +56,6 @@ class Upload extends React.Component {
             document.getElementById("cardHeader").textContent = "Wrong file format (ONLY " + Upload.fileTypesPrintable + ")";
 
             this.scrollToAnchor("card");
-        }
-
-        if (this.fileInput.current.files.length === 1) {
-            let label = document.getElementById("customLabel");
-
-            label.innerHTML = file.name;
         }
     }
 
