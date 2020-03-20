@@ -1,13 +1,25 @@
 import React from "react";
-import Content from "./content";
+
 
 class Navbar extends React.Component {
     switchToRU() {
-        Content.changeLanguage("RU");
+        let ruButtonHidden = document.getElementById("ruButtonHidden");
+        ruButtonHidden.click();
+
+        let ruButton = document.getElementById("ruButton");
+        ruButton.className = "btn nav-link active";
+        let enButton = document.getElementById("enButton");
+        enButton.className = "btn nav-link";
     }
 
     switchToEN() {
-        Content.changeLanguage("EN");
+        let enButtonHidden = document.getElementById("enButtonHidden");
+        enButtonHidden.click();
+
+        let ruButton = document.getElementById("ruButton");
+        ruButton.className = "btn nav-link";
+        let enButton = document.getElementById("enButton");
+        enButton.className = "btn nav-link active";
     }
 
     render() {
@@ -26,12 +38,12 @@ class Navbar extends React.Component {
 
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav ml-auto">
-                            <li className="nav-item active">
-                                <button className="btn nav-link" onClick={this.switchToRU}>RU</button>
+                            <li className="nav-item">
+                                <button className="btn nav-link" id="ruButton" onClick={this.switchToRU}>RU</button>
                             </li>
 
                             <li className="nav-item">
-                                <button className="btn nav-link" onClick={this.switchToEN}>EN</button>
+                                <button className="btn nav-link active" id="enButton" onClick={this.switchToEN}>EN</button>
                             </li>
                         </ul>
                     </div>

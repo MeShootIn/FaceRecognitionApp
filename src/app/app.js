@@ -10,9 +10,27 @@ import Instruction from './components/instruction';
 
 
 class App extends React.Component {
+  static language = "EN";
+
+  constructor(props) {
+    super(props);
+
+    this.state = {language : App.language};
+
+    this.changeLanguage = this.changeLanguage.bind(this);
+  }
+
+  changeLanguage(lang) {
+    App.language = lang;
+    this.setState({language : App.language});
+  }
+
   render() {
     return (
       <div>
+        <button id="ruButtonHidden" onClick={() => {this.changeLanguage("RU")}} hidden></button>
+        <button id="enButtonHidden" onClick={() => {this.changeLanguage("EN")}} hidden></button>
+
         <Navbar />
         <Description />
         <Gallery />
