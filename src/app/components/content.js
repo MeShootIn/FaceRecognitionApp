@@ -1,8 +1,25 @@
 import App from "../app";
 
 class Content {
-    static content(eng, rus) {
-        return (App.language === "EN") ? eng : rus;
+    static Languages = {
+        RU : "RU",
+        EN : "EN"
+    };
+
+    static content(en, ru) {
+        switch(App.language) {
+            case this.Languages.EN: {
+                return en;
+            }
+
+            case this.Languages.RU: {
+                return ru;
+            }
+
+            default: {
+                return undefined;
+            }
+        }
     }
 
     static description() {
@@ -54,7 +71,7 @@ class Content {
     static uploadYourPicture() {
         return Content.content(
             "Upload a picture",
-            "Загрузите вашу изображение"
+            "Загрузите ваше изображение"
         );
     }
 
