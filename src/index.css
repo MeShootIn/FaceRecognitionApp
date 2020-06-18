@@ -12,6 +12,17 @@ code {
     monospace;
 }
 
+#spinner {
+  width: 4rem;
+  height: 4rem;
+}
+
+footer {
+  background-color: #3f3f3f;
+  border-top: solid silver;
+  padding-top: 10px;
+}
+
 .btn-twitter:hover {
   color: #00acee;
 }
@@ -24,16 +35,15 @@ code {
   color: #FF5700;
 }
 
-.btn-google-plus-g:hover {
-  color: #db4a39;
-}
-
 .btn-vk:hover {
   color: #597da3;
 }
 
-footer {
-  background-color: #3f3f3f;
-  border-top: solid silver;
-  padding-top: 10px;
+.btn-link {
+  color: silver;
+}
+
+.btn-link:hover {
+  text-decoration: none;
+  color: silver;
 }

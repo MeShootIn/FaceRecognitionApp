@@ -25,7 +25,7 @@ class Upload extends React.Component {
 
     handleChange(event) {
         event.preventDefault();
-        
+
         if (this.fileInput.current.files.length !== 1) {
             return;
         }
@@ -36,20 +36,23 @@ class Upload extends React.Component {
         label.innerHTML = file.name;
 
         if (Upload.fileTypes.includes(file.type)) {
+            let input = document.getElementById("input");
+
             document.getElementById("card").className = "card border-success";
             document.getElementById("cardHeader").className = "card-header bg-success";
-
-            let input = document.getElementById("input");
             input.src = URL.createObjectURL(file);
-
+            input.hidden = false;
             document.getElementById("cardHeader").textContent = Content.successUpload();
 
             // рандом
             let match = document.getElementById("match");
+            match.hidden = false;
             match.textContent = Content.match() + " " + this.getRandomInt(0, 100) + "%";
             let output = document.getElementById("output");
             let src = [face001, face002, face003, face004];
+
             output.src = src[this.getRandomInt(0, 3)];
+            output.hidden = false;
 
             this.scrollToAnchor("input");
         }
@@ -71,6 +74,10 @@ class Upload extends React.Component {
     render() {
         return (
             <div className="container pt-3 mt-3">
+                <div id="spinner" class="spinner-grow text-secondary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
                 <div className="card border-dark" id="card">
                     <div className="card-header" id="cardHeader">
                         {Content.uploadYourPicture()}
@@ -83,7 +90,7 @@ class Upload extends React.Component {
                                     <div className="custom-file">
                                         <input type="file" className="custom-file-input" id="customFile"
                                             ref={this.fileInput} onChange={this.handleChange} accept={Upload.fileTypes} />
-                                        <label className="custom-file-label" for="customFile" id="customLabel">
+                                        <label className="custom-file-label" for="customFile" id="customLabel" data-browse={Content.uploadButton()}>
                                             {Content.chooseFile()}
                                         </label>
                                     </div>
