@@ -23,6 +23,30 @@ class Upload extends React.Component {
         return Math.floor(Math.random() * (b - a + 1) + a);
     }
 
+    move(target, T, frames) {
+        let dt = T / frames;
+        let id = setInterval(frame, dt);
+        let match = document.getElementById("match");
+        let percentText = document.getElementById("percent");
+        let t = 0;
+
+        function frame() {
+            function f(t) {
+                return 1 + Math.pow(t - 1, 3);
+            }
+
+            if (t >= T) {
+                clearInterval(id);
+            }
+            else {
+                t += dt;
+                let percent = f(t / T) * target;
+                match.style.width = percent + "%";
+                percentText.innerHTML = parseInt(percent) + "%";
+            }
+        }
+    }
+
     handleChange(event) {
         event.preventDefault();
 
@@ -45,12 +69,12 @@ class Upload extends React.Component {
             document.getElementById("cardHeader").textContent = Content.successUpload();
 
             // рандом
-            let match = document.getElementById("match");
-            match.hidden = false;
-            match.textContent = Content.match() + " " + this.getRandomInt(0, 100) + "%";
             let output = document.getElementById("output");
             let src = [face001, face002, face003, face004];
 
+            let rnd = this.getRandomInt(0, 100);
+            let T = 500;
+            this.move(rnd, T, T);
             output.src = src[this.getRandomInt(0, 3)];
             output.hidden = false;
 
@@ -74,8 +98,8 @@ class Upload extends React.Component {
     render() {
         return (
             <div className="container pt-3 mt-3">
-                <div id="spinner" class="spinner-grow text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
+                <div id="spinner" className="spinner-grow text-secondary" role="status">
+                    <span className="sr-only">Loading...</span>
                 </div>
 
                 <div className="card border-dark" id="card">
@@ -90,7 +114,7 @@ class Upload extends React.Component {
                                     <div className="custom-file">
                                         <input type="file" className="custom-file-input" id="customFile"
                                             ref={this.fileInput} onChange={this.handleChange} accept={Upload.fileTypes} />
-                                        <label className="custom-file-label" for="customFile" id="customLabel" data-browse={Content.uploadButton()}>
+                                        <label className="custom-file-label" htmlFor="customFile" id="customLabel" data-browse={Content.uploadButton()}>
                                             {Content.chooseFile()}
                                         </label>
                                     </div>

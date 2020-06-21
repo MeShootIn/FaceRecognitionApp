@@ -13,8 +13,12 @@ code {
 }
 
 #spinner {
-  width: 4rem;
-  height: 4rem;
+  width: 10vh;
+  height: 10vh;
+}
+
+#progress {
+  height: 7vh;
 }
 
 footer {

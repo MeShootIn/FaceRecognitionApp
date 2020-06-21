@@ -25,7 +25,7 @@ class Footer extends React.Component {
 
     render() {
         return (
-            <footer className="container-fluid pt-4">
+            <footer className="container-fluid mt-4">
                 <div className="row text-center">
                     <div className="col-12">
                         <h3 className="text-white">{Content.tellAboutUs()}</h3>
@@ -33,19 +33,19 @@ class Footer extends React.Component {
 
                     <div className="col-12">
                         <button type="button" className="btn btn-twitter btn-lg" onClick={this.shareTwitter}>
-                            <i class="fab fa-twitter"></i>
+                            <i className="fab fa-twitter"></i>
                         </button>
 
                         <button type="button" className="btn btn-facebook btn-lg" onClick={this.shareFacebook}>
-                            <i class="fab fa-facebook-f"></i>
+                            <i className="fab fa-facebook-f"></i>
                         </button>
 
                         <button type="button" className="btn btn-reddit btn-lg" onClick={this.shareReddit}>
-                            <i class="fab fa-reddit"></i>
+                            <i className="fab fa-reddit"></i>
                         </button>
 
                         <button type="button" className="btn btn-vk btn-lg" onClick={this.shareVK}>
-                            <i class="fab fa-vk"></i>
+                            <i className="fab fa-vk"></i>
                         </button>
                     </div>
 

@@ -21,10 +21,15 @@ class App extends React.Component {
     super(props);
 
     this.state = { language: App.language };
-    this.changeLanguage = this.changeLanguage.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  changeLanguage(lang) {
+  static setLanguage(lang) {
+    let buttons = document.getElementsByClassName("langButtonHidden");
+    buttons[lang].click();
+  }
+
+  handleClick(lang) {
     if (lang !== App.language) {
       App.language = lang;
       this.setState({ language: App.language });
@@ -34,8 +39,8 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <button id="ruButtonHidden" onClick={() => { this.changeLanguage(App.Languages.RU) }} hidden></button>
-        <button id="enButtonHidden" onClick={() => { this.changeLanguage(App.Languages.EN) }} hidden></button>
+        <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.EN)} hidden></button>
+        <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.RU)} hidden></button>
 
         <Navbar />
         <Description />

@@ -2,11 +2,11 @@ import App from "../app";
 
 
 class Content {
+    static GitHubLink = "https://github.com/FaceRecognitionTeam/FaceRecognitionApp";
+
     static content(contents) {
         return contents[App.language];
     }
-
-    static GitHubLink = "https://github.com/FaceRecognitionTeam/FaceRecognitionApp";
 
     static description() {
         return Content.content([
@@ -155,6 +155,13 @@ class Content {
         return Content.content([
             "The Neural Network compares the person with celebrity faces and suggests the most similar one.",
             "Нейронная сеть сравнивает фото человека со знаменитостями и предлагает наиболее похожее."
+        ]);
+    }
+
+    static errorCanvas() {
+        return Content.content([
+            "Your browser does not support drawing",
+            "Ваш браузер не поддерживает рисование"
         ]);
     }
 

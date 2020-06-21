@@ -5,7 +5,7 @@ import Content from "./content";
 class Instruction extends React.Component {
     render() {
         return (
-            <div className="container text-center">
+            <div className="container text-center mt-5">
                 <div className="row">
                     <div className="col-md-4">
                         <h5 className="text-secondary instruction">1. {Content.upload()}</h5>
@@ -18,7 +18,7 @@ class Instruction extends React.Component {
 
                     <div className="col-md-4">
                         <h5 className="text-secondary instruction">2. {Content.detection()}</h5>
-                        <i class="fas fa-atom fa-lg text-muted"></i>
+                        <i className="fas fa-atom fa-lg text-muted"></i>
 
                         <p>
                             {Content.detectionDescription()}
@@ -27,7 +27,7 @@ class Instruction extends React.Component {
 
                     <div className="col-md-4">
                         <h5 className="text-secondary instruction">3. {Content.result()}</h5>
-                        <i class="far fa-grin fa-lg text-muted"></i>
+                        <i className="far fa-grin fa-lg text-muted"></i>
 
                         <p>
                             {Content.resultDescription()}

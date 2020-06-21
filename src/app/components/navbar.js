@@ -1,10 +1,10 @@
 import React from "react";
+import App from "../app"
 
 
 class Navbar extends React.Component {
     switchToRU() {
-        let ruButtonHidden = document.getElementById("ruButtonHidden");
-        ruButtonHidden.click();
+        App.setLanguage(App.Languages.RU);
 
         let ruButton = document.getElementById("ruButton");
         ruButton.className = "btn nav-link active";
@@ -13,8 +13,7 @@ class Navbar extends React.Component {
     }
 
     switchToEN() {
-        let enButtonHidden = document.getElementById("enButtonHidden");
-        enButtonHidden.click();
+        App.setLanguage(App.Languages.EN);
 
         let ruButton = document.getElementById("ruButton");
         ruButton.className = "btn nav-link";
@@ -26,24 +25,24 @@ class Navbar extends React.Component {
         return (
             <nav className="navbar navbar-expand navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <a class="navbar-brand" href="/#">
-                        <img src="favicon.svg" width="32" height="32" focusable="false" class="d-inline-block align-top"
+                    <a className="navbar-brand" href="/#">
+                        <img src="favicon.svg" width="32" height="32" focusable="false" className="d-inline-block align-top"
                             alt="Icon" />
                         SeriesFace
                     </a>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-                        <span class="navbar-toggler-icon"></span>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
 
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
-                                <button className="btn nav-link" id="ruButton" onClick={this.switchToRU}>RU</button>
+                                <button className="btn nav-link" id="ruButton" onClick={() => this.switchToRU()}>RU</button>
                             </li>
 
                             <li className="nav-item">
-                                <button className="btn nav-link active" id="enButton" onClick={this.switchToEN}>EN</button>
+                                <button className="btn nav-link active" id="enButton" onClick={() => this.switchToEN()}>EN</button>
                             </li>
                         </ul>
                     </div>
