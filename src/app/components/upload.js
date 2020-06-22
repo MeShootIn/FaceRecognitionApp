@@ -1,53 +1,127 @@
 import React from "react";
+import Content from "./content";
+
+import face001 from '../../resourсes/face001.jpg';
+import face002 from '../../resourсes/face002.jpg';
+import face003 from '../../resourсes/face003.jpg';
+import face004 from '../../resourсes/face004.jpg';
+
 
 class Upload extends React.Component {
+    static fileTypes = ["image/jpeg", "image/pjpeg", "image/jpg", "image/png"];
+    static fileTypesPrintable = ["jpeg", "jpg", "png"];
+
     constructor(props) {
         super(props);
 
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.fileInput = React.createRef();
+    }
+
+    // [a, b]
+    getRandomInt(a, b) {
+        return Math.floor(Math.random() * (b - a + 1) + a);
+    }
+
+    move(target, T, frames) {
+        let dt = T / frames;
+        let id = setInterval(frame, dt);
+        let match = document.getElementById("match");
+        let percentText = document.getElementById("percent");
+        let t = 0;
+
+        function frame() {
+            function f(t) {
+                return 1 + Math.pow(t - 1, 3);
+            }
+
+            if (t >= T) {
+                clearInterval(id);
+            }
+            else {
+                t += dt;
+                let percent = f(t / T) * target;
+                match.style.width = percent + "%";
+                percentText.innerHTML = parseInt(percent) + "%";
+            }
+        }
     }
 
     handleChange(event) {
         event.preventDefault();
 
+        if (this.fileInput.current.files.length !== 1) {
+            return;
+        }
+
+        let file = this.fileInput.current.files[0];
         let label = document.getElementById("customLabel");
-        label.innerHTML = this.fileInput.current.files[0].name;
+
+        label.innerHTML = file.name;
+
+        if (Upload.fileTypes.includes(file.type)) {
+            let input = document.getElementById("input");
+
+            document.getElementById("card").className = "card border-success";
+            document.getElementById("cardHeader").className = "card-header bg-success";
+            input.src = URL.createObjectURL(file);
+            input.hidden = false;
+            document.getElementById("cardHeader").textContent = Content.successUpload();
+
+            // рандом
+            let output = document.getElementById("output");
+            let src = [face001, face002, face003, face004];
+
+            let rnd = this.getRandomInt(0, 100);
+            let T = 500;
+            this.move(rnd, T, T);
+            output.src = src[this.getRandomInt(0, 3)];
+            output.hidden = false;
+
+            this.scrollToAnchor("input");
+        }
+        else {
+            document.getElementById("card").className = "card border-danger";
+            document.getElementById("cardHeader").className = "card-header bg-danger";
+            document.getElementById("cardHeader").textContent = Content.wrongFileFormat() + Upload.fileTypesPrintable + ")";
+
+            this.scrollToAnchor("card");
+        }
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
+    scrollToAnchor(anchor) {
+        let elem = document.getElementById(anchor);
 
-        document.getElementById("card").className = "card border-success";
-        document.getElementById("cardHeader").className = "card-header bg-success";
+        elem.scrollIntoView({ behavior: "smooth" });
     }
 
     render() {
         return (
-            <div className="card border-warning" id="card">
-                <div className="card-header bg-warning" id="cardHeader">
-                    Upload your picture
+            <div className="container pt-3 mt-3">
+                <div id="spinner" className="spinner-grow text-secondary" role="status">
+                    <span className="sr-only">Loading...</span>
                 </div>
 
-                <div className="card-body">
-                    <form onSubmit={this.handleSubmit}>
+                <div className="card border-dark" id="card">
+                    <div className="card-header" id="cardHeader">
+                        {Content.uploadYourPicture()}
+                    </div>
+
+                    <div className="card-body">
                         <div className="container">
                             <div className="row">
-                                <div className="col-7 ml-auto">
+                                <div className="col">
                                     <div className="custom-file">
                                         <input type="file" className="custom-file-input" id="customFile"
-                                        ref={this.fileInput} onChange={this.handleChange} />
-                                        <label className="custom-file-label" for="customFile" id="customLabel">Choose file</label>
+                                            ref={this.fileInput} onChange={this.handleChange} accept={Upload.fileTypes} />
+                                        <label className="custom-file-label" htmlFor="customFile" id="customLabel" data-browse={Content.uploadButton()}>
+                                            {Content.chooseFile()}
+                                        </label>
                                     </div>
-                                </div>
-
-                                <div className="col-1 mr-auto">
-                                    <button className="btn btn-info" type="submit" onClick={this.handleClick}>Submit</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         );

@@ -1,72 +1,58 @@
-// **********************************************
-// Imports
-// **********************************************
-
 import React from 'react';
 
-/*
-import {getLandmarks, loadModels} from './faceapi';
-import FaceDraw from './facedraw';
-import ImageSelector from './tool';
-*/
-
-import NameApp from './components/nameApp';
+import Navbar from './components/navbar';
 import Description from './components/description';
 import Gallery from './components/gallery';
-import Output from './components/output';
 import Upload from './components/upload';
-
-// **********************************************
-// Const
-// **********************************************
-
-// **********************************************
-// Vars
-// **********************************************
-
-// **********************************************
-// class App
-// **********************************************
+import Result from './components/result';
+import Footer from './components/footer';
+import Instruction from './components/instruction';
 
 
 class App extends React.Component {
-  /*
+  static Languages = {
+    EN: 0,
+    RU: 1
+  };
+
+  static language = App.Languages.EN;
+
   constructor(props) {
     super(props);
-    this.m_mount = null;
-    this.onButton = this.onButton.bind(this);
 
-    // animation
-    this.state = {
-      waitY:    WAIT_Y_MIN,
-      waitStep: +WAIT_STEP,
-      canvas:   null,
-      imageSrc: null,
-      fullDesc: null,
-      idTimer: null,
-    };
-  } // end constr
+    this.state = { language: App.language };
+    this.handleClick = this.handleClick.bind(this);
+  }
 
-  */
+  static setLanguage(lang) {
+    let buttons = document.getElementsByClassName("langButtonHidden");
+    buttons[lang].click();
+  }
 
-  // *********************************************
-  // Write all components to jsxRender
+  handleClick(lang) {
+    if (lang !== App.language) {
+      App.language = lang;
+      this.setState({ language: App.language });
+    }
+  }
+
   render() {
-    
-
     return (
       <div>
-        <NameApp />
-        <div class="d-flex justify-content-center">
-          <Description />
-        </div>
+        <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.EN)} hidden></button>
+        <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.RU)} hidden></button>
+
+        <Navbar />
+        <Description />
         <Gallery />
         <Upload />
-        <Output />
+        <Result />
+        <Instruction />
+        <Footer />
       </div>
     );
-  } // end render
+  }
 
-} // end App
+}
 
 export default App;

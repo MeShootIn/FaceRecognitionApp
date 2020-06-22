@@ -11,3 +11,43 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#spinner {
+  width: 10vh;
+  height: 10vh;
+}
+
+#progress {
+  height: 7vh;
+}
+
+footer {
+  background-color: #3f3f3f;
+  border-top: solid silver;
+  padding-top: 10px;
+}
+
+.btn-twitter:hover {
+  color: #00acee;
+}
+
+.btn-facebook:hover {
+  color: #3b5998;
+}
+
+.btn-reddit:hover {
+  color: #FF5700;
+}
+
+.btn-vk:hover {
+  color: #597da3;
+}
+
+.btn-link {
+  color: silver;
+}
+
+.btn-link:hover {
+  text-decoration: none;
+  color: silver;
+}
