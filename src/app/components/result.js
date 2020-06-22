@@ -5,29 +5,29 @@ import face001 from "../../resourсes/face001.jpg";
 
 
 class Result extends React.Component {
-    componentDidMount() {
-        this.updateCanvas();
-    }
+    // componentDidMount() {
+    //     this.updateCanvas();
+    // }
 
-    componentDidUpdate() {
-        this.updateCanvas();
-    }
+    // componentDidUpdate() {
+    //     this.updateCanvas();
+    // }
 
-    updateCanvas() {
-        let canvas = this.refs.input;
-        let ctx = canvas.getContext("2d");
+    // updateCanvas() {
+    //     let canvas = this.refs.input;
+    //     let ctx = canvas.getContext("2d");
 
-        if(!ctx) {
-            return;
-        }
+    //     if(!ctx) {
+    //         return;
+    //     }
 
-        let img = new Image();
-        img.src = face001;
+    //     let img = new Image();
+    //     img.src = face001;
 
-        img.onload = function () {
-            ctx.drawImage(img, 0, 0);
-        }
-    }
+    //     img.onload = function () {
+    //         ctx.drawImage(img, 0, 0);
+    //     }
+    // }
 
     render() {
         return (
