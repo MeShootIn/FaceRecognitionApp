@@ -119,7 +119,7 @@ class Upload extends React.Component {
             output.src = src;
             //
             let T = 500;
-            this.move(result._distance*100, T, T);
+            this.move(result[0]._distance*100, T, T);
             // output.src = src[this.getRandomInt(0, 3)];
             output.hidden = false;
 
