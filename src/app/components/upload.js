@@ -29,6 +29,11 @@ class Upload extends React.Component {
         this.fileInput = React.createRef();
     }
 
+    loadingDependences = async () => {
+        await faceAPI.loadModels();
+        this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE) });
+      };
+
     // [a, b]
     // getRandomInt(a, b) {
     //     return Math.floor(Math.random() * (b - a + 1) + a);
