@@ -1,5 +1,5 @@
 import React from "react";
-import App from "../app"
+import App from "../app";
 
 
 class Navbar extends React.Component {
@@ -38,11 +38,11 @@ class Navbar extends React.Component {
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
-                                <button className="btn nav-link" id="ruButton" onClick={() => this.switchToRU()}>RU</button>
+                                <button className="btn nav-link" id="ruButton" onClick={this.switchToRU}>RU</button>
                             </li>
 
                             <li className="nav-item">
-                                <button className="btn nav-link active" id="enButton" onClick={() => this.switchToEN()}>EN</button>
+                                <button className="btn nav-link active" id="enButton" onClick={this.switchToEN}>EN</button>
                             </li>
                         </ul>
                     </div>

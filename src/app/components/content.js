@@ -54,45 +54,10 @@ class Content {
         ]);
     }
 
-    static uploadYourPicture() {
-        return Content.content([
-            "Upload a picture",
-            "Загрузите ваше изображение"
-        ]);
-    }
-
     static chooseFile() {
         return Content.content([
             "Choose file",
             "Выберите файл"
-        ]);
-    }
-
-    static yourFace() {
-        return Content.content([
-            "Your face",
-            "Ваше лицо"
-        ]);
-    }
-
-    static celebrityFace() {
-        return Content.content([
-            "Most similar celebrity",
-            "Наиболее похожая знаменитость"
-        ]);
-    }
-
-    static match() {
-        return Content.content([
-            "Match",
-            "Совпадение"
-        ]);
-    }
-
-    static upload() {
-        return Content.content([
-            "Upload a photo",
-            "Загрузите фотографию"
         ]);
     }
 
@@ -103,20 +68,10 @@ class Content {
         ]);
     }
 
-    static uploadDescription() {
+    static uploadYourPicture() {
         return Content.content([
-            "There should be only one person in the photo. Face recognition accuracy depends on the resolution and " +
-            "quality of a face image.",
-
-            "На фотографии должен быть только один человек. Точность распознавания лица зависит от разрешения и " +
-            "качества изображения лица."
-        ]);
-    }
-
-    static wrongFileFormat() {
-        return Content.content([
-            "Wrong file format (ONLY ",
-            "Неверный формат файла (ТОЛЬКО "
+            "Upload your picture",
+            "Загрузите ваше изображение"
         ]);
     }
 
@@ -127,14 +82,80 @@ class Content {
         ]);
     }
 
-    static detection() {
+    static errorFileCount() {
+        return Content.content([
+            "Choose only ONE file",
+            "Выберите только ОДИН файл"
+        ]);
+    }
+
+    static errorFileType(fileTypesPrintable) {
+        return Content.content([
+            "Wrong file format (ONLY " + fileTypesPrintable.join(", ") + ")",
+            "Неверный формат файла (ТОЛЬКО " + fileTypesPrintable.join(", ") + ")"
+        ]);
+    }
+
+    static errorNoFace() {
+        return Content.content([
+            "no faces were found in the photo",
+            "Не обнаружено ни одного лица на фотографии"
+        ]);
+    }
+
+    static errorFaceCount() {
+        return Content.content([
+            "There should be only ONE face in the photo",
+            "На фотографии должно быть только ОДНО лицо"
+        ]);
+    }
+
+    static loading() {
+        return Content.content([
+            "Loading...",
+            "Загрузка..."
+        ]);
+    }
+
+    static errorCanvas() {
+        return Content.content([
+            "Your browser does not support drawing",
+            "Ваш браузер не поддерживает рисование"
+        ]);
+    }
+
+    static youLookLike(celebrityName) {
+        return Content.content([
+            "You look like " + celebrityName + " on",
+            "Вы выглядите как " + celebrityName + " на"
+        ]);
+    }
+
+    static firstStep() {
+        return Content.content([
+            "Upload a photo",
+            "Загрузите фотографию"
+        ]);
+    }
+
+    static firstStepDescription() {
+        return Content.content([
+            "There should be only one person in the photo. Face recognition accuracy depends on the resolution and " +
+            "quality of a face image.",
+
+            "На фотографии должен быть только один человек. Точность распознавания лица зависит от разрешения и " +
+            "качества изображения лица."
+        ]);
+    }
+
+    static secondStep() {
         return Content.content([
             "The system detects the face",
             "Система распознает лицо"
         ]);
     }
 
-    static detectionDescription() {
+    static secondStepDescription() {
         return Content.content([
             "The system recognizes a face and creates a face pattern. She is able to find key components of the face, " +
             "including eyebrows, eyes, nose, mouth and position.",
@@ -144,24 +165,17 @@ class Content {
         ]);
     }
 
-    static result() {
+    static thirdStep() {
         return Content.content([
             "Enjoy the result!",
             "Всё готово!"
         ]);
     }
 
-    static resultDescription() {
+    static thirdStepDescription() {
         return Content.content([
             "The Neural Network compares the person with celebrity faces and suggests the most similar one.",
             "Нейронная сеть сравнивает фото человека со знаменитостями и предлагает наиболее похожее."
-        ]);
-    }
-
-    static errorCanvas() {
-        return Content.content([
-            "Your browser does not support drawing",
-            "Ваш браузер не поддерживает рисование"
         ]);
     }
 
@@ -174,11 +188,11 @@ class Content {
 
     static disclaimer() {
         return Content.content([
-            "We do not store uploaded photos. All photos are deleted after recognition. If you want to share it, then it " +
+            "We do not store uploaded photos. Photos are deleted after recognition. If you want to share it, it " +
             "will be saved in the appropriate social network.",
 
-            "Мы не храним загруженные фотографии. Все фотографии удаляются после распознавания. Если Вы захотите поделиться " +
-            "ею, то она будет сохранена в соответствующей социальной сети."
+            "Мы не храним загруженные фотографии. Фотографии удаляются после распознавания. Если Вы захотите поделиться " +
+            "ею, она будет сохранена в соответствующей социальной сети."
         ]);
     }
 }

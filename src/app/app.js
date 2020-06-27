@@ -20,7 +20,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { language: App.language };
+    this.state = {
+      language: App.language
+    };
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -32,8 +34,27 @@ class App extends React.Component {
   handleClick(lang) {
     if (lang !== App.language) {
       App.language = lang;
-      this.setState({ language: App.language });
+      this.setState({
+        language: App.language
+      });
     }
+  }
+
+  static scrollToAnchor(anchor) {
+    let elem = document.getElementById(anchor);
+    elem.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+  static showById(id) {
+    let elem = document.getElementById(id);
+    elem.hidden = false;
+  }
+
+  static hideById(id) {
+    let elem = document.getElementById(id);
+    elem.hidden = true;
   }
 
   render() {
