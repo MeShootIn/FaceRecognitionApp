@@ -1,36 +1,23 @@
 import React from "react";
 import Content from "./content";
+import * as faceapi from 'face-api.js';
 
 
 /**
  * добавить Content.celebrityName(index) {getFromJson("dataset.json", index);}
  * исправить размер canvasInput.width ...
+ * для обрезки - посмотреть функцию drawImage
  */
 
 class Result extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            uploaded: false
+        };
         this.updateCanvas = this.updateCanvas.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.state = {
-            inputSrc: null,
-            inputWidth: 0,
-            inputHeight: 0,
-            outputSrc: null,
-            outputWidth: 0,
-            outputHeight: 0
-        };
-    }
-
-    static upload(inputSrc, outputSrc) {
-        let input = document.getElementById("inputImgHidden");
-        let output = document.getElementById("outputImgHidden");
-        let button = document.getElementById("uploadButtonHidden");
-
-        input.src = inputSrc;
-        output.src = outputSrc;
-        button.click();
     }
 
     componentDidMount() {
@@ -42,64 +29,98 @@ class Result extends React.Component {
     }
 
     updateCanvas() {
-        if(!this.state.inputSrc) {
+        if (!this.state.uploaded) {
             return;
         }
 
-        // input
-        let canvasInput = this.refs.input;
+        let canvasInput = document.getElementById("inputCanvas");
         let ctxInput = canvasInput.getContext("2d");
 
         if (!ctxInput) {
+            alert(Content.errorCanvas());
             return;
         }
 
+        let inputImgHidden = document.getElementById("inputImgHidden");
         let input = new Image();
-        input.src = this.state.inputSrc;
-        canvasInput.width = 600;
-        canvasInput.height = 800;
-        // canvasInput.width = this.state.inputWidth;
-        // canvasInput.height = this.state.inputHeight;
-        // ОТРИСОВКА INPUT
-        input.onload = function () {
-            ctxInput.drawImage(input, 0, 0);
-        }
+        input.src = inputImgHidden.src;
 
-        // output
-        let canvasOutput = this.refs.output;
+        input.onload = () => {
+            canvasInput.width = inputImgHidden.width;
+            canvasInput.height = inputImgHidden.height;
+
+            ctxInput.drawImage(input, 0, 0);
+        };
+
+        input.onerror = () => {
+            alert(Content.errorImageUpload());
+            return;
+        };
+
+        let canvasOutput = document.getElementById("outputCanvas");
         let ctxOutput = canvasOutput.getContext("2d");
 
         if (!ctxOutput) {
+            alert(Content.errorCanvas());
             return;
         }
 
+        let outputImgHidden = document.getElementById("outputImgHidden");
         let output = new Image();
-        output.src = this.state.outputSrc;
-        canvasOutput.width = 600;
-        canvasOutput.height = 800;
-        // canvasOutput.width = this.state.outputWidth;
-        // canvasOutput.height = this.state.outputHeight;
-        // ОТРИСОВКА OUTPUT
-        output.onload = function () {
+        output.src = outputImgHidden.src;
+
+        output.onload = () => {
+            canvasOutput.width = outputImgHidden.width;
+            canvasOutput.height = outputImgHidden.height;
+
             ctxOutput.drawImage(output, 0, 0);
+        };
+
+        output.onerror = () => {
+            alert(Content.errorImageUpload());
+            return;
+        };
+
+        this.drawFaceLandmarks(input, canvasInput);
+        this.drawFaceLandmarks(output, canvasOutput);
+    }
+
+    async drawFaceLandmarks(input, canvas) {
+        const displaySize = { width: input.width, height: input.height };
+        // resize the overlay canvas to the input dimensions
+        faceapi.matchDimensions(canvas, displaySize);
+
+        const detectionsWithLandmarks = await faceapi
+            .detectAllFaces(input)
+            .withFaceLandmarks();
+        // resize the detected boxes and landmarks in case your displayed image has a different size than the original
+        const resizedResults = faceapi.resizeResults(detectionsWithLandmarks, displaySize);
+        // draw the landmarks into the canvas
+        faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
+    }
+
+    static upload(inputSrc, outputSrc) {
+        let input = document.getElementById("inputImgHidden");
+        let output = document.getElementById("outputImgHidden");
+        let button = document.getElementById("uploadButtonHidden");
+
+        input.src = inputSrc;
+
+        input.onload = () => {
+            output.src = outputSrc;
+
+            output.onload = () => {
+                button.click();
+            }
         }
     }
 
     handleClick() {
-        let input = document.getElementById("inputImgHidden");
-        let output = document.getElementById("outputImgHidden");
-
         this.setState({
-            inputSrc: input.src,
-            inputW: input.width,
-            inputH: input.height,
-            outputSrc: output.src,
-            outputW: output.width,
-            outputH: output.height
+            uploaded: true
         });
-        this.updateCanvas(); // мб не нужно из-за compDidUpdate
     }
-    
+
     render() {
         return (
             <div className="container mt-5" id="result">
@@ -108,35 +129,33 @@ class Result extends React.Component {
                 <button id="uploadButtonHidden" onClick={this.handleClick} hidden></button>
 
                 <div className="row pt-3">
-                    <div className="col-md-6">
-                        <canvas ref="input">
-                            <p>
-                                {Content.errorCanvas()}
-                            </p>
-                        </canvas>
-                    </div>
-
-                    <div className="col-md-6">
-                        <canvas ref="output">
-                            <p>
-                                {Content.errorCanvas()}
-                            </p>
-                        </canvas>
-                    </div>
-                </div>
-
-                <div className="row pt-3">
                     <div className="col">
                         <h3 className="text-center" id="celebrityName" hidden>???</h3>
                     </div>
                 </div>
-
+                
                 <div className="row">
                     <div className="col">
                         <div id="progress" className="progress" hidden>
                             <div id="progressBar" className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                                 <h2 className="text-center" id="percentMatch">???</h2>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="d-flex justify-content-center">
+                    <div className="row pt-3">
+                        <div className="col-md-6">
+                            <canvas id="inputCanvas">{Content.errorCanvas()}</canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="d-flex justify-content-center">
+                    <div className="row pt-3">
+                        <div className="col-md-6">
+                            <canvas id="outputCanvas">{Content.errorCanvas()}</canvas>
                         </div>
                     </div>
                 </div>

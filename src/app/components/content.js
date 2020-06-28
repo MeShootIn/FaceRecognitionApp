@@ -2,7 +2,7 @@ import App from "../app";
 
 
 class Content {
-    static GitHubLink = "https://github.com/FaceRecognitionTeam/FaceRecognitionApp";
+    static HerokuLink = "https://seriesface.herokuapp.com/";
 
     static content(contents) {
         return contents[App.language];
@@ -121,6 +121,13 @@ class Content {
         return Content.content([
             "Your browser does not support drawing",
             "Ваш браузер не поддерживает рисование"
+        ]);
+    }
+
+    static errorImageUpload() {
+        return Content.content([
+            "Image upload error",
+            "Ошибка загрузки изображения"
         ]);
     }
 

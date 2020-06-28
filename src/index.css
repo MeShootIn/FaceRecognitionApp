@@ -21,6 +21,10 @@ code {
   height: 9vh;
 }
 
+canvas {
+  border-radius: 5px;
+}
+
 footer {
   background-color: #3f3f3f;
   border-top: solid silver;

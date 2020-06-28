@@ -4,22 +4,22 @@ import Content from "./content";
 
 class Footer extends React.Component {
     shareTwitter() {
-        window.open("https://twitter.com/share?url=" + Content.GitHubLink + "&text=" + Content.description(), "Twitter share",
+        window.open("https://twitter.com/share?url=" + Content.HerokuLink + "&text=" + Content.description(), "Twitter share",
             "width=420,height=430,resizable=yes,scrollbars=yes,status=yes");
     }
 
     shareFacebook() {
-        window.open("https://www.facebook.com/sharer.php?p[title]=MyTitle&p[summary]=" + Content.description() + "&p[url]=" + Content.GitHubLink, "Facebook share",
+        window.open("https://www.facebook.com/sharer.php?p[title]=MyTitle&p[summary]=" + Content.description() + "&p[url]=" + Content.HerokuLink, "Facebook share",
             "width=420,height=230,resizable=yes,scrollbars=yes,status=yes");
     }
 
     shareReddit() {
-        window.open("https://www.reddit.com/submit?url=" + Content.GitHubLink + "&title=" + Content.description(),
+        window.open("https://www.reddit.com/submit?url=" + Content.HerokuLink + "&title=" + Content.description(),
             "Reddit share", "width=860,height=860,resizable=yes,scrollbars=yes,status=yes");
     }
 
     shareVK() {
-        window.open("https://vk.com/share.php?url=" + Content.GitHubLink + "&title=" + Content.description() +
+        window.open("https://vk.com/share.php?url=" + Content.HerokuLink + "&title=" + Content.description() +
             "&description=" + Content.description(), "VK share", "width=420,height=430,resizable=yes,scrollbars=yes,status=yes");
     }
 

@@ -118,13 +118,12 @@ class Upload extends React.Component {
             else {
                 if (detections.length === 1) {
                     result = this.state.faceMatcher.findBestMatch(detections[0].descriptor);
+
                     console.log(result._label, result._distance);
                     App.showById("celebrityName");
-                    celebrityName.innerHTML = Content.youLookLike(result._label); // !!!!!!!!!!!!!!!!!
+                    celebrityName.innerHTML = Content.youLookLike(result._label);
                 }
                 else {
-                    // result = detections.map(d => this.state.faceMatcher.findBestMatch(d.descriptor));
-                    // result.forEach(res => console.log(res.toString));
                     console.log(result);
 
                     this.setErrorOnCard();
@@ -136,7 +135,7 @@ class Upload extends React.Component {
                 }
             }
             //
-            
+
             App.hideById("spinner");
             App.showById("progress");
 
