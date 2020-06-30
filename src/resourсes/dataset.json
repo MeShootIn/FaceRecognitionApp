@@ -1,22 +1,30 @@
-[
-    {
-        "name": [
-            {"EN": "Black Widow"},
-            {"RU": "Чёрная вдова"}
-        ],
-        "src": [
-            "../../resourсes/labeled_images/Black Widow/1.jpg",
-            "../../resourсes/labeled_images/Black Widow/2.jpg"
-        ]
-    },
-    {
-        "name": [
-            {"EN": "Captain America"},
-            {"RU": "Капитан Америка"}
-        ],
-        "src": [
-            "../../resourсes/labeled_images/Captain America/1.jpg",
-            "../../resourсes/labeled_images/Captain America/2.jpg"
-        ]
-    }
-]
+{
+    "Black Widow": [
+        "Black Widow",
+        "Чёрная вдова"
+    ],
+    "Captain America": [
+        "Captain America",
+        "Капитан Америка"
+    ],
+    "Captain Marvel": [
+        "Captain Marvel",
+        "Капитан Марвел"
+    ],
+    "Hawkeye": [
+        "Hawkeye",
+        "Соколиный глаз"
+    ],
+    "Jim Rhodes": [
+        "Jim Rhodes",
+        "Джим Родс"
+    ],
+    "Thor": [
+        "Thor",
+        "Тор"
+    ],
+    "Tony Stark": [
+        "Tony Stark",
+        "Тони Старк"
+    ]
+}

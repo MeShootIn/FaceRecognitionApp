@@ -3,6 +3,7 @@ import App from "../app";
 
 class Content {
     static HerokuLink = "https://seriesface.herokuapp.com/";
+    static Celebrities = require("../../resourсes/dataset.json");
 
     static content(contents) {
         return contents[App.language];
@@ -98,7 +99,7 @@ class Content {
 
     static errorNoFace() {
         return Content.content([
-            "no faces were found in the photo",
+            "No faces were found in the photo",
             "Не обнаружено ни одного лица на фотографии"
         ]);
     }
@@ -131,10 +132,28 @@ class Content {
         ]);
     }
 
-    static youLookLike(celebrityName) {
+    static moreDetails() {
         return Content.content([
-            "You look like " + celebrityName + " on",
-            "Вы выглядите как " + celebrityName + " на"
+            "More details",
+            "Подробнее"
+        ]);
+    }
+
+    static youLookLike() {
+        return Content.content([
+            "You look like ",
+            "Вы выглядите как "
+        ]);
+    }
+
+    static celebrityName(originalName) {
+        return Content.Celebrities[originalName][App.language];
+    }
+
+    static on() {
+        return Content.content([
+            " on",
+            " на"
         ]);
     }
 
