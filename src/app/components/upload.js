@@ -49,7 +49,7 @@ class Upload extends React.Component {
 
     loadingDependences = async () => {
         await faceAPI.loadModels();
-        this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE) });
+        await this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE) });
     };
 
     uploadStatus(resultCode) {

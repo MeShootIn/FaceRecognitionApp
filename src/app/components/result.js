@@ -24,6 +24,8 @@ class Result extends React.Component {
         this.frame = this.frame.bind(this);
         this.handleClickHidden = this.handleClickHidden.bind(this);
         this.handleClickDetails = this.handleClickDetails.bind(this);
+
+        // App.hideById("result");
     }
 
     componentDidMount() {
@@ -104,9 +106,7 @@ class Result extends React.Component {
     }
 
     async frame(args) {
-        let target = args.target;
-        let t = args.t;
-        let T = args.T;
+        let { target, t, T } = args;
         let progressBar = document.getElementById("progressBar");
         let percentMatch = document.getElementById("percentMatch");
 
@@ -156,6 +156,8 @@ class Result extends React.Component {
     }
 
     handleClickHidden() {
+        // [""].forEach(id => App.hideById(id));
+
         let originalName = document.getElementById("originalNameHidden").value;
         let distance = parseFloat(document.getElementById("distanceHidden").value);
         let T = 1000;
@@ -200,9 +202,9 @@ class Result extends React.Component {
                     </div>
 
                     <div className="col-12 text-center">
-                        <h1 className="display-4">
-                            {Content.youLookLike()}<span className="font-weight-bolder">{(this.state.result) ? Content.celebrityName(this.state.result.originalName) : null}</span>{Content.on()}
-                        </h1>
+                        <h2>
+                            {Content.youLookLike()}<strong>{(this.state.result) ? Content.celebrityName(this.state.result.originalName) : null}</strong>{Content.on()}
+                        </h2>
                     </div>
                 </div>
 
