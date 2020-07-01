@@ -13,6 +13,10 @@ const imagesDict = {};
 labels.forEach(label => { imagesDict[label] = require(`../../resourсes/labeled_images/${label}/1.jpg`) });
 //
 
+/**
+ * разрешить размер 600x800 и меньше
+ */
+
 const ResultCode = {
     INIT: 0,
     SUCCESS: 1,

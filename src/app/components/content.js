@@ -27,31 +27,17 @@ class Content {
         ]);
     }
 
-    static AlyciaDebnamCarey() {
+    static previous() {
         return Content.content([
-            "Alycia Debnam-Carey",
-            "Алисия Дебнем-Кэри"
+            "Previous",
+            "Предыдущий"
         ]);
     }
 
-    static AshleyBenson() {
+    static next() {
         return Content.content([
-            "Ashley Benson",
-            "Эшли Бенсон"
-        ]);
-    }
-
-    static NinaDobrev() {
-        return Content.content([
-            "Nina Dobrev",
-            "Нина Добрев"
-        ]);
-    }
-
-    static KendallJenner() {
-        return Content.content([
-            "Kendall Jenner",
-            "Кендалл Дженнер"
+            "Next",
+            "Следующий"
         ]);
     }
 

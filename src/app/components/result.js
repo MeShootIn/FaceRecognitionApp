@@ -7,6 +7,11 @@ import App from "../app";
 /**
  * исправить размер canvasInput.width ...
  * для обрезки - посмотреть как работает функция drawImage ...
+ * продумать и доделать "деструктор"
+ * проверить адаптивность
+ * динамическая загрузка изображений в Gallery из .json
+ * 
+ * !!!! исчезают линии
  */
 
 const DECIMAL_PLACES = 2;
@@ -17,13 +22,17 @@ class Result extends React.Component {
 
         this.state = {
             showDetails: false,
-            result: null
+            result: null,
+            resizedResultsInput: null,
+            resizedResultsOutput: null
         };
         this.updateResult = this.updateResult.bind(this);
         this.move = this.move.bind(this);
         this.frame = this.frame.bind(this);
         this.handleClickHidden = this.handleClickHidden.bind(this);
         this.handleClickDetails = this.handleClickDetails.bind(this);
+        this.drawFaceLandmarksInput = this.drawFaceLandmarksInput.bind(this);
+        this.drawFaceLandmarksOutput = this.drawFaceLandmarksOutput.bind(this);
 
         // App.hideById("result");
     }
@@ -90,19 +99,41 @@ class Result extends React.Component {
         };
 
         if (this.state.showDetails) {
-            this.drawFaceLandmarks(inputImg, inputCanvas);
-            this.drawFaceLandmarks(outputImg, outputCanvas);
+            this.drawFaceLandmarksInput(inputImg, inputCanvas);
+            this.drawFaceLandmarksOutput(outputImg, outputCanvas);
         }
     }
 
     // ОПТИМИЗИРОВАТЬ
-    async drawFaceLandmarks(input, canvas) {
-        const displaySize = { width: input.width, height: input.height };
+    async getFaceLandmarks(img, canvas) {
+        const displaySize = { width: img.width, height: img.height };
         faceapi.matchDimensions(canvas, displaySize);
 
-        const detectionsWithLandmarks = await faceapi.detectAllFaces(input).withFaceLandmarks();
+        // здесь скорее всего проблема при долгой загрузке
+        const detectionsWithLandmarks = await faceapi.detectAllFaces(img).withFaceLandmarks();
         const resizedResults = faceapi.resizeResults(detectionsWithLandmarks, displaySize);
-        faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
+
+        return resizedResults;
+    }
+
+    async drawFaceLandmarksInput(img, canvas) {
+        if(!this.state.resizedResultsInput) {
+            this.setState({
+                resizedResultsInput: await this.getFaceLandmarks(img, canvas)
+            });
+        }
+
+        faceapi.draw.drawFaceLandmarks(canvas, this.state.resizedResultsInput);
+    }
+
+    async drawFaceLandmarksOutput(img, canvas) {
+        if(!this.state.resizedResultsOutput) {
+            this.setState({
+                resizedResultsOutput: await this.getFaceLandmarks(img, canvas)
+            });
+        }
+
+        faceapi.draw.drawFaceLandmarks(canvas, this.state.resizedResultsOutput);
     }
 
     async frame(args) {
@@ -155,6 +186,20 @@ class Result extends React.Component {
         }
     }
 
+    handleClickDetails() {
+        let percentMatch = document.getElementById("percentMatch");
+        this.setState((state) => ({
+            showDetails: !state.showDetails
+        }));
+
+        if (!this.state.showDetails) {
+            percentMatch.innerHTML = parseFloat(this.state.result.distance * 100).toFixed(DECIMAL_PLACES);
+        }
+        else {
+            percentMatch.innerHTML = parseInt(percentMatch.innerHTML);
+        }
+    }
+
     handleClickHidden() {
         // [""].forEach(id => App.hideById(id));
 
@@ -173,20 +218,6 @@ class Result extends React.Component {
         App.showById("details");
     }
 
-    handleClickDetails() {
-        let percentMatch = document.getElementById("percentMatch");
-        this.setState((state) => ({
-            showDetails: !state.showDetails
-        }));
-
-        if (!this.state.showDetails) {
-            percentMatch.innerHTML = parseFloat(this.state.result.distance * 100).toFixed(DECIMAL_PLACES);
-        }
-        else {
-            percentMatch.innerHTML = parseInt(percentMatch.innerHTML);
-        }
-    }
-
     render() {
         return (
             <div className="container mt-5" id="result">
@@ -198,7 +229,7 @@ class Result extends React.Component {
 
                 <div className="row pt-3" id="details" hidden>
                     <div className="col-12">
-                        <span className="pull-right"><button type="button" class="btn btn-outline-info" onClick={this.handleClickDetails}>{Content.moreDetails()}</button></span>
+                        <span className="pull-right"><button type="button" className="btn btn-outline-info" onClick={this.handleClickDetails}>{Content.moreDetails()}</button></span>
                     </div>
 
                     <div className="col-12 text-center">
