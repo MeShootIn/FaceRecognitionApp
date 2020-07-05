@@ -5,13 +5,11 @@ import App from "../app";
 
 
 /**
- * исправить размер canvasInput.width ...
  * для обрезки - посмотреть как работает функция drawImage ...
- * продумать и доделать "деструктор"
- * проверить адаптивность
- * динамическая загрузка изображений в Gallery из .json
+ * исправить адаптивность
+ * сделать в каждой папке по 1 фото
  * 
- * !!!! исчезают линии
+ * ещё раз попробовать оптимизировать drawFaceLandmarks с учётом setState(updater[, callback])
  */
 
 const DECIMAL_PLACES = 2;
@@ -22,35 +20,65 @@ class Result extends React.Component {
 
         this.state = {
             showDetails: false,
-            result: null,
-            resizedResultsInput: null,
-            resizedResultsOutput: null
+            result: null
         };
-        this.updateResult = this.updateResult.bind(this);
+        this.inputImg = null;
+        this.outputImg = null;
+
+        this.updateCanvas = this.updateCanvas.bind(this);
         this.move = this.move.bind(this);
         this.frame = this.frame.bind(this);
         this.handleClickHidden = this.handleClickHidden.bind(this);
         this.handleClickDetails = this.handleClickDetails.bind(this);
-        this.drawFaceLandmarksInput = this.drawFaceLandmarksInput.bind(this);
-        this.drawFaceLandmarksOutput = this.drawFaceLandmarksOutput.bind(this);
-
-        // App.hideById("result");
     }
 
-    componentDidMount() {
-        this.updateResult();
+    static upload(args) {
+        let inputImgHidden = document.getElementById("inputImgHidden");
+        let outputImgHidden = document.getElementById("outputImgHidden");
+        let distanceHidden = document.getElementById("distanceHidden");
+        let originalNameHidden = document.getElementById("originalNameHidden");
+        let uploadButtonHidden = document.getElementById("uploadButtonHidden");
+
+        inputImgHidden.src = args.inputSrc;
+        originalNameHidden.value = args.originalName;
+        distanceHidden.value = args.distance;
+
+        inputImgHidden.onload = () => {
+            outputImgHidden.src = args.outputSrc;
+
+            outputImgHidden.onload = () => {
+                uploadButtonHidden.click();
+            }
+        }
+    }
+
+    handleClickHidden() {
+        let inputImgHidden = document.getElementById("inputImgHidden");
+        let outputImgHidden = document.getElementById("outputImgHidden");
+        let originalName = document.getElementById("originalNameHidden").value;
+        let percent = parseFloat(document.getElementById("distanceHidden").value) * 100;
+        let T = 1000;
+
+        this.setState({
+            showDetails: false,
+            result: {
+                originalName: originalName,
+                percent: percent
+            },
+        });
+        this.inputImg = inputImgHidden;
+        this.outputImg = outputImgHidden;
+
+        App.showById("result");
+        this.move(percent, T);
+        App.scrollToAnchor("result");
     }
 
     componentDidUpdate() {
-        this.updateResult();
+        this.updateCanvas();
     }
 
-    updateResult() {
-        if (!this.state.result) {
-            return;
-        }
-
-        let inputCanvas = document.getElementById("inputCanvas");
+    drawImg(inputCanvas, inputImgHidden) {
         let ctxInput = inputCanvas.getContext("2d");
 
         if (!ctxInput) {
@@ -58,7 +86,6 @@ class Result extends React.Component {
             return;
         }
 
-        let inputImgHidden = document.getElementById("inputImgHidden");
         let inputImg = new Image();
         inputImg.src = inputImgHidden.src;
 
@@ -73,70 +100,27 @@ class Result extends React.Component {
             alert(Content.errorImageUpload());
             return;
         };
-
-        let outputCanvas = document.getElementById("outputCanvas");
-        let ctxOutput = outputCanvas.getContext("2d");
-
-        if (!ctxOutput) {
-            alert(Content.errorCanvas());
-            return;
-        }
-
-        let outputImgHidden = document.getElementById("outputImgHidden");
-        let outputImg = new Image();
-        outputImg.src = outputImgHidden.src;
-
-        outputImg.onload = () => {
-            outputCanvas.width = outputImgHidden.width;
-            outputCanvas.height = outputImgHidden.height;
-
-            ctxOutput.drawImage(outputImg, 0, 0);
-        };
-
-        outputImg.onerror = () => {
-            alert(Content.errorImageUpload());
-            return;
-        };
-
-        if (this.state.showDetails) {
-            this.drawFaceLandmarksInput(inputImg, inputCanvas);
-            this.drawFaceLandmarksOutput(outputImg, outputCanvas);
-        }
     }
 
-    // ОПТИМИЗИРОВАТЬ
-    async getFaceLandmarks(img, canvas) {
+    updateCanvas() {
+        if (!this.state.result) {
+            return;
+        }
+
+        this.drawImg(document.getElementById("inputCanvas"), document.getElementById("inputImgHidden"));
+        this.drawImg(document.getElementById("outputCanvas"), document.getElementById("outputImgHidden"));
+    }
+
+    async drawFaceLandmarks(img, canvas) {
         const displaySize = { width: img.width, height: img.height };
         faceapi.matchDimensions(canvas, displaySize);
 
-        // здесь скорее всего проблема при долгой загрузке
         const detectionsWithLandmarks = await faceapi.detectAllFaces(img).withFaceLandmarks();
         const resizedResults = faceapi.resizeResults(detectionsWithLandmarks, displaySize);
-
-        return resizedResults;
+        faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
     }
 
-    async drawFaceLandmarksInput(img, canvas) {
-        if(!this.state.resizedResultsInput) {
-            this.setState({
-                resizedResultsInput: await this.getFaceLandmarks(img, canvas)
-            });
-        }
-
-        faceapi.draw.drawFaceLandmarks(canvas, this.state.resizedResultsInput);
-    }
-
-    async drawFaceLandmarksOutput(img, canvas) {
-        if(!this.state.resizedResultsOutput) {
-            this.setState({
-                resizedResultsOutput: await this.getFaceLandmarks(img, canvas)
-            });
-        }
-
-        faceapi.draw.drawFaceLandmarks(canvas, this.state.resizedResultsOutput);
-    }
-
-    async frame(args) {
+    frame(args) {
         let { target, t, T } = args;
         let progressBar = document.getElementById("progressBar");
         let percentMatch = document.getElementById("percentMatch");
@@ -166,70 +150,46 @@ class Result extends React.Component {
         }
     }
 
-    static upload(args) {
-        let inputImgHidden = document.getElementById("inputImgHidden");
-        let outputImgHidden = document.getElementById("outputImgHidden");
-        let distanceHidden = document.getElementById("distanceHidden");
-        let originalNameHidden = document.getElementById("originalNameHidden");
-        let uploadButtonHidden = document.getElementById("uploadButtonHidden");
-
-        inputImgHidden.src = args.inputSrc;
-        originalNameHidden.value = args.originalName;
-        distanceHidden.value = args.distance;
-
-        inputImgHidden.onload = () => {
-            outputImgHidden.src = args.outputSrc;
-
-            outputImgHidden.onload = () => {
-                uploadButtonHidden.click();
-            }
-        }
-    }
-
     handleClickDetails() {
         let percentMatch = document.getElementById("percentMatch");
+        let buttonDetails = document.getElementById("buttonDetails");
+        let inputCanvas = document.getElementById("inputCanvas");
+        let outputCanvas = document.getElementById("outputCanvas");
+
+        buttonDetails.disabled = true;
+
         this.setState((state) => ({
             showDetails: !state.showDetails
-        }));
+        }), async function () {
+            if (this.state.showDetails) {
+                await this.drawFaceLandmarks(this.inputImg, inputCanvas);
+                this.drawImg(outputCanvas, this.outputImg);
+                await this.drawFaceLandmarks(this.outputImg, outputCanvas);
+            }
+
+            buttonDetails.disabled = false;
+        });
 
         if (!this.state.showDetails) {
-            percentMatch.innerHTML = parseFloat(this.state.result.distance * 100).toFixed(DECIMAL_PLACES);
+            percentMatch.innerHTML = this.state.result.percent.toFixed(DECIMAL_PLACES);
         }
         else {
-            percentMatch.innerHTML = parseInt(percentMatch.innerHTML);
+            percentMatch.innerHTML = parseInt(this.state.result.percent);
         }
-    }
-
-    handleClickHidden() {
-        // [""].forEach(id => App.hideById(id));
-
-        let originalName = document.getElementById("originalNameHidden").value;
-        let distance = parseFloat(document.getElementById("distanceHidden").value);
-        let T = 1000;
-
-        this.setState({
-            showDetails: false,
-            result: {
-                originalName: originalName,
-                distance: distance
-            }
-        });
-        this.move(distance * 100, T);
-        App.showById("details");
     }
 
     render() {
         return (
-            <div className="container mt-5" id="result">
+            <div className="container mt-5" id="result" hidden>
                 <img id="inputImgHidden" alt="inputHidden" hidden></img>
                 <img id="outputImgHidden" alt="outputHidden" hidden></img>
                 <input id="originalNameHidden" type="text" hidden></input>
                 <input id="distanceHidden" type="text" hidden></input>
                 <button id="uploadButtonHidden" onClick={this.handleClickHidden} hidden></button>
 
-                <div className="row pt-3" id="details" hidden>
+                <div className="row pt-3" id="details">
                     <div className="col-12">
-                        <span className="pull-right"><button type="button" className="btn btn-outline-info" onClick={this.handleClickDetails}>{Content.moreDetails()}</button></span>
+                        <span className="pull-right"><button type="button" id="buttonDetails" className="btn btn-outline-info" onClick={this.handleClickDetails}>{Content.moreDetails()}</button></span>
                     </div>
 
                     <div className="col-12 text-center">

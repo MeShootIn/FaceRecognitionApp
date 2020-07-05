@@ -13,10 +13,6 @@ const imagesDict = {};
 labels.forEach(label => { imagesDict[label] = require(`../../resourсes/labeled_images/${label}/1.jpg`) });
 //
 
-/**
- * разрешить размер 600x800 и меньше
- */
-
 const ResultCode = {
     INIT: 0,
     SUCCESS: 1,
@@ -53,7 +49,7 @@ class Upload extends React.Component {
 
     loadingDependences = async () => {
         await faceAPI.loadModels();
-        await this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE) });
+        this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE) });
     };
 
     uploadStatus(resultCode) {
@@ -88,6 +84,8 @@ class Upload extends React.Component {
         if (this.fileInputRef.current.files.length === 0) {
             return;
         }
+
+        App.hideById("result");
 
         if (this.fileInputRef.current.files.length !== 1) {
             this.setErrorOnCard();
@@ -152,7 +150,6 @@ class Upload extends React.Component {
 
             App.hideById("spinner");
             App.showById("progress");
-            App.scrollToAnchor("result");
             Result.upload({
                 inputSrc: URL.createObjectURL(file),
                 outputSrc: imagesDict[result._label],

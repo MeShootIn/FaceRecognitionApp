@@ -16,11 +16,11 @@ class Gallery extends React.Component {
         this.loadCelebrities();
     }
 
-    loadCelebrities() {
+    async loadCelebrities() {
         this.setState({
             dataset: Object.keys(Content.Celebrities).map(originalName => {
                 return {
-                    src: `../../resourсes/labeled_images/${originalName}/1.jpg`,
+                    src: require(`../../resourсes/labeled_images/${originalName}/1.jpg`),
                     celebrityName: originalName
                 };
             })
@@ -28,7 +28,6 @@ class Gallery extends React.Component {
     }
 
     render() {
-        // добавить асинхронность ???
         return (
             <div className="container col-11 col-sm-8 col-md-5 py-3 my-3">
                 <h2 className="text-center">{Content.gallery()}</h2>
@@ -38,7 +37,7 @@ class Gallery extends React.Component {
                         {
                             this.state.dataset.map((elem, i) => {
                                 return (
-                                    <CarouselItem src={elem.src} celebrityName={elem.celebrityName}
+                                    <CarouselItem key={i} src={elem.src} celebrityName={elem.celebrityName}
                                         active={(i === 0) ? "true" : "false"} />
                                 );
                             })
@@ -64,11 +63,11 @@ class CarouselItem extends React.Component {
     render() {
         return (
             <div className={"carousel-item" + ((this.props.active === "true") ? " active" : "")}>
-                <img src={this.props.src} className="d-block w-100 rounded" alt={this.props.celebrityName} />
+                <img src={this.props.src} className="d-block w-100 rounded" alt={Content.celebrityName(this.props.celebrityName)} />
 
                 <div className="carousel-caption">
                     {/* потом добавить перевод */}
-                    <h5>{this.props.celebrityName}</h5>
+                    <h5>{Content.celebrityName(this.props.celebrityName)}</h5>
                 </div>
             </div>
         );
