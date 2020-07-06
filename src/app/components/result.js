@@ -102,13 +102,22 @@ class Result extends React.Component {
         };
     }
 
-    updateCanvas() {
+    async updateCanvas() {
         if (!this.state.result) {
             return;
         }
 
-        this.drawImg(document.getElementById("inputCanvas"), document.getElementById("inputImgHidden"));
-        this.drawImg(document.getElementById("outputCanvas"), document.getElementById("outputImgHidden"));
+        let inputCanvas = document.getElementById("inputCanvas");
+        let outputCanvas = document.getElementById("outputCanvas");
+
+        this.drawImg(inputCanvas, document.getElementById("inputImgHidden"));
+        this.drawImg(outputCanvas, document.getElementById("outputImgHidden"));
+
+        if (this.state.showDetails) {
+            await this.drawFaceLandmarks(this.inputImg, inputCanvas);
+            this.drawImg(outputCanvas, this.outputImg);
+            await this.drawFaceLandmarks(this.outputImg, outputCanvas);
+        }
     }
 
     async drawFaceLandmarks(img, canvas) {
@@ -153,20 +162,13 @@ class Result extends React.Component {
     handleClickDetails() {
         let percentMatch = document.getElementById("percentMatch");
         let buttonDetails = document.getElementById("buttonDetails");
-        let inputCanvas = document.getElementById("inputCanvas");
-        let outputCanvas = document.getElementById("outputCanvas");
 
         buttonDetails.disabled = true;
 
         this.setState((state) => ({
             showDetails: !state.showDetails
-        }), async function () {
-            if (this.state.showDetails) {
-                await this.drawFaceLandmarks(this.inputImg, inputCanvas);
-                this.drawImg(outputCanvas, this.outputImg);
-                await this.drawFaceLandmarks(this.outputImg, outputCanvas);
-            }
-
+        }), async () => {
+            await this.updateCanvas();
             buttonDetails.disabled = false;
         });
 
