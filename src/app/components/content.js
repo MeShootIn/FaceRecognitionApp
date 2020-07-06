@@ -1,185 +1,211 @@
 import App from "../app";
 
+
 class Content {
-    static Languages = {
-        RU : "RU",
-        EN : "EN"
-    };
+    static HerokuLink = "https://seriesface.herokuapp.com/";
+    static Celebrities = require("../../resourсes/dataset.json");
 
-    static content(en, ru) {
-        switch(App.language) {
-            case this.Languages.EN: {
-                return en;
-            }
-
-            case this.Languages.RU: {
-                return ru;
-            }
-
-            default: {
-                return undefined;
-            }
-        }
+    static content(contents) {
+        return contents[App.language];
     }
 
     static description() {
-        return Content.content(
-            "Have you ever imagined yourself as a character in a popular series? What star you could easily replace on" +
+        return Content.content([
+            "Have you ever imagined yourself as a character in a popular series? What star you could easily replace on " +
             "the set? Find out now! Just upload image of your face and we will show you a character that you looks like.",
 
             "Вы когда-нибудь представляли себя персонажем популярного сериала? Какую звезду Вы могли бы легко заменить " +
             "на съёмочной площадке? Узнайте сейчас! Просто загрузите изображение своего лица, и мы покажем Вам " +
             "персонажа, который выглядит как Вы."
-        );
+        ]);
     }
 
     static gallery() {
-        return Content.content(
+        return Content.content([
             "Gallery",
             "Галерея"
-        );
+        ]);
     }
 
-    static AlyciaDebnamCarey() {
-        return Content.content(
-            "Alycia Debnam-Carey",
-            "Алисия Дебнем-Кэри"
-        );
+    static previous() {
+        return Content.content([
+            "Previous",
+            "Предыдущий"
+        ]);
     }
 
-    static AshleyBenson() {
-        return Content.content(
-            "Ashley Benson",
-            "Эшли Бенсон"
-        );
-    }
-
-    static NinaDobrev() {
-        return Content.content(
-            "Nina Dobrev",
-            "Нина Добрев"
-        );
-    }
-
-    static KendallJenner() {
-        return Content.content(
-            "Kendall Jenner",
-            "Кендалл Дженнер"
-        );
-    }
-
-    static uploadYourPicture() {
-        return Content.content(
-            "Upload a picture",
-            "Загрузите ваше изображение"
-        );
+    static next() {
+        return Content.content([
+            "Next",
+            "Следующий"
+        ]);
     }
 
     static chooseFile() {
-        return Content.content(
+        return Content.content([
             "Choose file",
             "Выберите файл"
-        );
+        ]);
     }
 
-    static yourFace() {
-        return Content.content(
-            "Your face",
-            "Ваше лицо"
-        );
+    static uploadButton() {
+        return Content.content([
+            "Upload",
+            "Загрузить"
+        ]);
     }
 
-    static celebrityFace() {
-        return Content.content(
-            "Most similar celebrity",
-            "Наиболее похожая знаменитость"
-        );
+    static uploadYourPicture() {
+        return Content.content([
+            "Upload your picture",
+            "Загрузите ваше изображение"
+        ]);
     }
 
-    static match() {
-        return Content.content(
-            "Match",
-            "Совпадение"
-        );
+    static successUpload() {
+        return Content.content([
+            "Image uploaded successfully",
+            "Изображение успешно загружено"
+        ]);
     }
 
-    static upload() {
-        return Content.content(
+    static errorFileCount() {
+        return Content.content([
+            "Choose only ONE file",
+            "Выберите только ОДИН файл"
+        ]);
+    }
+
+    static errorFileType(fileTypesPrintable) {
+        return Content.content([
+            "Wrong file format (ONLY " + fileTypesPrintable.join(", ") + ")",
+            "Неверный формат файла (ТОЛЬКО " + fileTypesPrintable.join(", ") + ")"
+        ]);
+    }
+
+    static errorNoFace() {
+        return Content.content([
+            "No faces were found in the photo",
+            "Не обнаружено ни одного лица на фотографии"
+        ]);
+    }
+
+    static errorFaceCount() {
+        return Content.content([
+            "There should be only ONE face in the photo",
+            "На фотографии должно быть только ОДНО лицо"
+        ]);
+    }
+
+    static loading() {
+        return Content.content([
+            "Loading...",
+            "Загрузка..."
+        ]);
+    }
+
+    static errorCanvas() {
+        return Content.content([
+            "Your browser does not support drawing",
+            "Ваш браузер не поддерживает рисование"
+        ]);
+    }
+
+    static errorImageUpload() {
+        return Content.content([
+            "Image upload error",
+            "Ошибка загрузки изображения"
+        ]);
+    }
+
+    static moreDetails() {
+        return Content.content([
+            "More details",
+            "Подробнее"
+        ]);
+    }
+
+    static youLookLike() {
+        return Content.content([
+            "You look like ",
+            "Вы выглядите как "
+        ]);
+    }
+
+    static celebrityName(originalName) {
+        return Content.Celebrities[originalName][App.language];
+    }
+
+    static on() {
+        return Content.content([
+            " on",
+            " на"
+        ]);
+    }
+
+    static firstStep() {
+        return Content.content([
             "Upload a photo",
             "Загрузите фотографию"
-        );
+        ]);
     }
 
-    static uploadDescription() {
-        return Content.content(
+    static firstStepDescription() {
+        return Content.content([
             "There should be only one person in the photo. Face recognition accuracy depends on the resolution and " +
             "quality of a face image.",
 
             "На фотографии должен быть только один человек. Точность распознавания лица зависит от разрешения и " +
             "качества изображения лица."
-        );
+        ]);
     }
 
-    static wrongFileFormat() {
-        return Content.content(
-            "Wrong file format (ONLY ",
-            "Неверный формат файла (ТОЛЬКО "
-        );
-    }
-
-    static successUpload() {
-        return Content.content(
-            "Image uploaded successfully",
-            "Изображение успешно загружено"
-        );
-    }
-
-    static detection() {
-        return Content.content(
+    static secondStep() {
+        return Content.content([
             "The system detects the face",
             "Система распознает лицо"
-        );
+        ]);
     }
 
-    static detectionDescription() {
-        return Content.content(
-            "The system detects the face and creates a facial pattern. It can locate the key components of faces, " +
+    static secondStepDescription() {
+        return Content.content([
+            "The system recognizes a face and creates a face pattern. She is able to find key components of the face, " +
             "including eyebrows, eyes, nose, mouth and position.",
 
-            "Система распознает лицо и создает шаблон лица. Он может найти ключевые компоненты лица, в том числе " +
+            "Система распознает лицо и создает шаблон лица. Она способна найти ключевые компоненты лица, в том числе " +
             "брови, глаза, нос, рот и положение."
-        );
+        ]);
     }
 
-    static result() {
-        return Content.content(
+    static thirdStep() {
+        return Content.content([
             "Enjoy the result!",
             "Всё готово!"
-        );
+        ]);
     }
 
-    static resultDescription() {
-        return Content.content(
+    static thirdStepDescription() {
+        return Content.content([
             "The Neural Network compares the person with celebrity faces and suggests the most similar one.",
             "Нейронная сеть сравнивает фото человека со знаменитостями и предлагает наиболее похожее."
-        );
+        ]);
     }
 
     static tellAboutUs() {
-        return Content.content(
+        return Content.content([
             "Tell about us",
             "Расскажите о нас"
-        );
+        ]);
     }
 
     static disclaimer() {
-        return Content.content(
-            "We do not store uploaded photos. All photos are deleted after recognition. The photo will be saved only" +
-            "if you want to share it.",
+        return Content.content([
+            "We do not store uploaded photos. Photos are deleted after recognition. If you want to share it, it " +
+            "will be saved in the appropriate social network.",
 
-            "Мы не храним загруженные фотографии. Все фотографии удаляются после распознавания. Фотография будет" +
-            "сохранена, только если вы захотите поделиться ею."
-        );
+            "Мы не храним загруженные фотографии. Фотографии удаляются после распознавания. Если Вы захотите поделиться " +
+            "ею, она будет сохранена в соответствующей социальной сети."
+        ]);
     }
 }
 

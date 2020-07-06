@@ -10,26 +10,58 @@ import Instruction from './components/instruction';
 
 
 class App extends React.Component {
-  static language = "EN";
+  static Languages = {
+    EN: 0,
+    RU: 1
+  };
+
+  static language = App.Languages.EN;
 
   constructor(props) {
     super(props);
 
-    this.state = {language : App.language};
-
-    this.changeLanguage = this.changeLanguage.bind(this);
+    this.state = {
+      language: App.language
+    };
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  changeLanguage(lang) {
-    App.language = lang;
-    this.setState({language : App.language});
+  static setLanguage(lang) {
+    let buttons = document.getElementsByClassName("langButtonHidden");
+    buttons[lang].click();
+  }
+
+  handleClick(lang) {
+    if (lang !== App.language) {
+      App.language = lang;
+      this.setState({
+        language: App.language
+      });
+    }
+  }
+
+  static scrollToAnchor(anchor) {
+    let elem = document.getElementById(anchor);
+    elem.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+  static showById(id) {
+    let elem = document.getElementById(id);
+    elem.hidden = false;
+  }
+
+  static hideById(id) {
+    let elem = document.getElementById(id);
+    elem.hidden = true;
   }
 
   render() {
     return (
       <div>
-        <button id="ruButtonHidden" onClick={() => {this.changeLanguage("RU")}} hidden></button>
-        <button id="enButtonHidden" onClick={() => {this.changeLanguage("EN")}} hidden></button>
+        <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.EN)} hidden></button>
+        <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.RU)} hidden></button>
 
         <Navbar />
         <Description />
