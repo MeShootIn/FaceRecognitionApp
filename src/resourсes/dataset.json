@@ -212,8 +212,8 @@
         "Молли Уизли"
     ],
     "Ned Stark": [
-        "Ned Stark",
-        "Эддард Старк"
+        "Eddard (Ned) Stark",
+        "Эддард (Нед) Старк"
     ],
     "Neville Longbottom": [
         "Neville Longbottom",
@@ -232,12 +232,12 @@
         "Персиваль Грейвс"
     ],
     "Petyr Baelish": [
-        "Petyr Baelish",
-        "Петир Бейлиш"
+        "Petyr Baelish (Littlefinger)",
+        "Петир Бейлиш (Мизинец)"
     ],
     "Porpentina Goldstein": [
-        "Porpentina Goldstein",
-        "Порпентина Саламандер"
+        "Porpentina (Tina) Goldstein",
+        "Порпентина (Тина) Голдштейн"
     ],
     "Queenie Goldstein": [
         "Queenie Goldstein",
@@ -245,7 +245,7 @@
     ],
     "Quirinus Quirrell": [
         "Quirinus Quirrell",
-        "Квиринус Квиррелл"
+        "Профессор Квиррелл"
     ],
     "Ragnar Lothbrok": [
         "Ragnar Lothbrok",
@@ -270,5 +270,102 @@
     "Rollo": [
         "Rollo",
         "Ролло"
+    ],
+    "Ron Weasley": [
+        "Ron Weasley",
+        "Рон Уизли"
+    ],
+    "Roose Bolton": [
+        "Roose Bolton",
+        "Русе Болтон"
+    ],
+    "Rubeus Hagrid": [
+        "Rubeus Hagrid",
+        "Рубеус Хагрид"
+    ],
+    "Samwell Tarly": [
+        "Samwell Tarly",
+        "Сэмвел Тарли"
+    ],
+    "Sandor Clegane": [
+        "Sandor Clegane",
+        "Сандор Клиган"
+    ],
+    "Sansa Stark": [
+        "Sansa Stark",
+        "Санса Старк"
+    ],
+    "Seamus Finnigan": [
+        "Seamus Finnigan",
+        "Симус Финниган"
+    ],
+    "Severus Snape": [
+        "Severus Snape",
+        "Северус Снегг"
+    ],
+
+    "Sirius Black": [
+        "Sirius Black",
+        "Сириус Блэк"
+    ],
+    "Stannis Baratheon": [
+        "Stannis Baratheon",
+        "Станнис Баратеон"
+    ],
+    "Sybill Trelawney": [
+        "Sybill Trelawney",
+        "Сивилла Трелони"
+    ],
+    "The High Sparrow": [
+        "The High Sparrow",
+        "Его Воробейшество"
+    ],
+    "Theon Greyjoy": [
+        "Theon Greyjoy",
+        "Теон Грейджой"
+    ],
+    "Thor": [
+        "Thor",
+        "Тор"
+    ],
+    "Tommen Baratheon": [
+        "Tommen Baratheon",
+        "Томмен Баратеон"
+    ],
+    "Tony Stark": [
+        "Tony Stark",
+        "Тони Старк"
+    ],
+    "Tormund Giantsbane": [
+        "Tormund Giantsbane",
+        "Тормунд Великанья Смерть"
+    ],
+    "Tyrion Lannister": [
+        "Tyrion Lannister",
+        "Тирион Ланнистер"
+    ],
+    "Tywin Lannister": [
+        "Tywin Lannister",
+        "Тайвин Ланнистер"
+    ],
+    "Varys": [
+        "Varys",
+        "Варис"
+    ],
+    "Viktor Krum": [
+        "Viktor Krum",
+        "Виктор Крам"
+    ],
+    "Vincent Crabbe": [
+        "Vincent Crabbe",
+        "Винсент Крэбб"
+    ],
+    "Viserys Targaryen": [
+        "Viserys Targaryen",
+        "Визерис Таргариен"
+    ],
+    "Wonder women": [
+        "Wonder women",
+        "Чудо-женщина"
     ]
 }
