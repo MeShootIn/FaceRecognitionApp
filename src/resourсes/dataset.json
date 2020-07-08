@@ -1,7 +1,51 @@
 {
+    "Alastor Moody": [
+        "Alastor Moody",
+        "Аластор Грюм"
+    ],
+    "Albus Dumbledore": [
+        "Albus Dumbledore",
+        "Альбус Дамблдор"
+    ],
+    "Argus Filch": [
+        "Argus Filch",
+        "Аргус Филч"
+    ],
+    "Arthur Weasley": [
+        "Arthur Weasley",
+        "Артур Уизли"
+    ],
+    "Arya Stark": [
+        "Arya Stark",
+        "Арья Старк"
+    ],
+    "Athelstan": [
+        "Athelstan",
+        "Ательстан"
+    ],
+    "Bellatrix Lestrange": [
+        "Bellatrix Lestrange",
+        "Беллатриса Лестрейндж"
+    ],
+    "Black Panther": [
+        "Black Panther",
+        "Чёрная пантера"
+    ],
     "Black Widow": [
         "Black Widow",
         "Чёрная вдова"
+    ],
+    "Bran Stark": [
+        "Bran Stark",
+        "Бран Старк"
+    ],
+    "Brienne of Tarth": [
+        "Brienne of Tarth",
+        "Бриенна Тарт"
+    ],
+    "Bronn": [
+        "Bronn",
+        "Бронн"
     ],
     "Captain America": [
         "Captain America",
@@ -11,20 +55,220 @@
         "Captain Marvel",
         "Капитан Марвел"
     ],
+    "Cedric Diggory": [
+        "Cedric Diggory",
+        "Седрик Диггори"
+    ],
+    "Cersei Lannister": [
+        "Cersei Lannister",
+        "Серсея Ланнистер"
+    ],
+    "Cho Chang": [
+        "Cho Chang",
+        "Чжоу Чанг"
+    ],
+    "Credence Barebone": [
+        "Credence Barebone",
+        "Криденс Бэрбоун"
+    ],
+    "Daario Naharis": [
+        "Daario Naharis",
+        "Даарио Нахарис"
+    ],
+    "Daenerys Targaryen": [
+        "Daenerys Targaryen",
+        "Дейнерис Таргариен"
+    ],
+    "Davos Seaworth": [
+        "Davos Seaworth",
+        "Давос Сиворт"
+    ],
+    "Dobby": [
+        "Dobby",
+        "Добби"
+    ],
+    "Dolores Umbridge": [
+        "Dolores Umbridge",
+        "Долорес Амбридж"
+    ],
+    "Draco Malfoy": [
+        "Draco Malfoy",
+        "Драко Малфой"
+    ],
+    "Falcon": [
+        "Falcon",
+        "Сокол"
+    ],
+    "Fleur Delacour": [
+        "Fleur Delacour",
+        "Флёр Делакур"
+    ],
+    "Gellert Grindelwald": [
+        "Gellert Grindelwald",
+        "Геллерт Грин-де-Вальд"
+    ],
+    "Gilderoy Lockhart": [
+        "Gilderoy Lockhart",
+        "Златопуст Локонс"
+    ],
+    "Ginny Weasley": [
+        "Ginny Weasley",
+        "Джинни Уизли"
+    ],
+    "Gregory Goyle": [
+        "Gregory Goyle",
+        "Грегори Гойл"
+    ],
+    "Harry Potter": [
+        "Harry Potter",
+        "Гарри Поттер"
+    ],
     "Hawkeye": [
         "Hawkeye",
         "Соколиный глаз"
     ],
-    "Jim Rhodes": [
-        "Jim Rhodes",
-        "Джим Родс"
+    "Hermione Granger": [
+        "Hermione Granger",
+        "Гермиона Грейнджер"
     ],
-    "Thor": [
-        "Thor",
-        "Тор"
+    "Horace Slughorn": [
+        "Horace Slughorn",
+        "Гораций Слизнорт"
     ],
-    "Tony Stark": [
-        "Tony Stark",
-        "Тони Старк"
+    "Hulk": [
+        "Hulk",
+        "Халк"
+    ],
+    "Jacob Kowalski": [
+        "Jacob Kowalski",
+        "Якоб Ковальски"
+    ],
+    "Jaime Lannister": [
+        "Jaime Lannister",
+        "Джейме Ланнистер"
+    ],
+    "Joffrey Baratheon": [
+        "Joffrey Baratheon",
+        "Джоффри Баратеон"
+    ],
+    "Jon Snow": [
+        "Jon Snow",
+        "Джон Сноу"
+    ],
+    "Jorah Mormont": [
+        "Jorah Mormont",
+        "Джорах Мормонт"
+    ],
+    "Kingsley Shacklebolt": [
+        "Kingsley Shacklebolt",
+        "Кингсли Бруствер"
+    ],
+    "Lagertha": [
+        "Lagertha",
+        "Лагерта"
+    ],
+    "Lavender Brown": [
+        "Lavender Brown",
+        "Лаванда Браун"
+    ],
+    "Leta Lestrange": [
+        "Leta Lestrange",
+        "Лита Лестрейндж"
+    ],
+    "Loki": [
+        "Loki",
+        "Локи"
+    ],
+    "Lord Voldemort": [
+        "Lord Voldemort",
+        "Лорд Волан-де-Морт"
+    ],
+    "Lucius Malfoy": [
+        "Lucius Malfoy",
+        "Люциус Малфой"
+    ],
+    "Luna Lovegood": [
+        "Luna Lovegood",
+        "Полумна Лавгуд"
+    ],
+    "Margaery Tyrell": [
+        "Margaery Tyrell",
+        "Маргери Тирелл"
+    ],
+    "Melisandre": [
+        "Melisandre",
+        "Мелисандра"
+    ],
+    "Minerva McGonagall": [
+        "Minerva McGonagall",
+        "Минерва Макгонагалл"
+    ],
+    "Missandei": [
+        "Missandei",
+        "Миссандея"
+    ],
+    "Molly Weasley": [
+        "Molly Weasley",
+        "Молли Уизли"
+    ],
+    "Ned Stark": [
+        "Ned Stark",
+        "Эддард Старк"
+    ],
+    "Neville Longbottom": [
+        "Neville Longbottom",
+        "Невилл Долгопупс"
+    ],
+    "Newt Scamander": [
+        "Newt Scamander",
+        "Ньют Саламандер"
+    ],
+    "Nymphadora Tonks": [
+        "Nymphadora Tonks",
+        "Нимфадора Тонкс"
+    ],
+    "Percival Graves": [
+        "Percival Graves",
+        "Персиваль Грейвс"
+    ],
+    "Petyr Baelish": [
+        "Petyr Baelish",
+        "Петир Бейлиш"
+    ],
+    "Porpentina Goldstein": [
+        "Porpentina Goldstein",
+        "Порпентина Саламандер"
+    ],
+    "Queenie Goldstein": [
+        "Queenie Goldstein",
+        "Куинни Голдштейн"
+    ],
+    "Quirinus Quirrell": [
+        "Quirinus Quirrell",
+        "Квиринус Квиррелл"
+    ],
+    "Ragnar Lothbrok": [
+        "Ragnar Lothbrok",
+        "Рагнар Лодброк"
+    ],
+    "Ramsay Bolton": [
+        "Ramsay Bolton",
+        "Рамси Болтон"
+    ],
+    "Remus Lupin": [
+        "Remus Lupin",
+        "Римус Люпин"
+    ],
+    "Rita Skeeter": [
+        "Rita Skeeter",
+        "Рита Скитер"
+    ],
+    "Robb Stark": [
+        "Robb Stark",
+        "Робб Старк"
+    ],
+    "Rollo": [
+        "Rollo",
+        "Ролло"
     ]
 }
