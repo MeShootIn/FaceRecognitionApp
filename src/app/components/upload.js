@@ -2,15 +2,15 @@ import React from "react";
 import Content from "./content";
 import * as faceAPI from "../faceapi";
 import * as faceapi from 'face-api.js';
-import { labels } from "../../resourсes/labels";
+// import { labels } from "../../resourсes/labels";
 import App from "../app";
 import Result from "./result";
 
 
 // Loading imagies and descriptors of base pics
 const JSON_PROFILE = require('../../resourсes/labeledFaceDescriptors.json');
-const imagesDict = {};
-labels.forEach(label => { imagesDict[label] = require(`../../resourсes/labeled_images/${label}/1.jpg`) });
+// const imagesDict = {};
+// labels.forEach(label => { imagesDict[label] = require(`../../resourсes/labeled_images/${label}/1.jpg`) });
 //
 
 const ResultCode = {
@@ -135,8 +135,6 @@ class Upload extends React.Component {
                     console.log(result._label, result._distance);
                 }
                 else {
-                    console.log(result);
-
                     this.setErrorOnCard();
                     this.setState({
                         resultCode: ResultCode.ERROR_FACE_COUNT
@@ -148,12 +146,15 @@ class Upload extends React.Component {
             }
             //
 
+            let outputImage = require(`../../resourсes/labeled_images/${result._label}.jpg`);
+            let outputName = result._label.replace(/\s\d$/,'');
+
             App.hideById("spinner");
             App.showById("progress");
             Result.upload({
                 inputSrc: URL.createObjectURL(file),
-                outputSrc: imagesDict[result._label],
-                originalName: result._label,
+                outputSrc: outputImage,
+                originalName: outputName,
                 distance: result._distance
             });
         }

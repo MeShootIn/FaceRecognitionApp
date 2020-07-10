@@ -20,7 +20,7 @@ class Gallery extends React.Component {
         this.setState({
             dataset: Object.keys(Content.Celebrities).map(originalName => {
                 return {
-                    src: require(`../../resourсes/labeled_images/${originalName}/1.jpg`),
+                    src: require(`../../resourсes/labeled_images/${originalName} 1.jpg`),
                     celebrityName: originalName
                 };
             })
