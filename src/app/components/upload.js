@@ -18,8 +18,12 @@ const ResultCode = {
     SUCCESS: 1,
     ERROR_FILE_COUNT: 2,
     ERROR_FILE_TYPE: 3,
-    ERROR_NO_FACE: 4,
-    ERROR_FACE_COUNT: 5
+    ERROR_NO_FACE: 4
+};
+
+const Algorithm = {
+    NAIVE: 0,
+    ADVANCED: 1
 };
 
 class Upload extends React.Component {
@@ -34,10 +38,13 @@ class Upload extends React.Component {
         //
         this.state = {
             faceMatcher: null,
-            fileName: null,
-            resultCode: ResultCode.INIT
+            file: null,
+            resultCode: ResultCode.INIT,
+            algorithm: Algorithm.ADVANCED
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeNaive = this.handleChangeNaive.bind(this);
+        this.handleChangeAdvanced = this.handleChangeAdvanced.bind(this);
         this.fileInputRef = React.createRef();
     }
 
@@ -47,13 +54,13 @@ class Upload extends React.Component {
         App.scrollToAnchor("cardUploadContainer");
     }
 
-    loadingDependences = async () => {
+    async loadingDependences() {
         await faceAPI.loadModels();
         this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE) });
     };
 
     uploadStatus(resultCode) {
-        switch(resultCode) {
+        switch (resultCode) {
             case ResultCode.INIT: {
                 return Content.uploadYourPicture();
             }
@@ -61,7 +68,7 @@ class Upload extends React.Component {
                 return Content.successUpload();
             }
             case ResultCode.ERROR_FILE_COUNT: {
-                return Content.errorFaceCount();
+                return Content.errorFileCount();
             }
             case ResultCode.ERROR_FILE_TYPE: {
                 return Content.errorFileType(Upload.fileTypesPrintable);
@@ -69,13 +76,54 @@ class Upload extends React.Component {
             case ResultCode.ERROR_NO_FACE: {
                 return Content.errorNoFace();
             }
-            case ResultCode.ERROR_FACE_COUNT: {
-                return Content.errorFaceCount();
-            }
             default: {
                 return null;
             }
         }
+    }
+
+    async faceRecognition() {
+        const image = await faceapi.bufferToImage(this.state.file);
+        const detections = await faceAPI.getDetections(image);
+        let result = null;
+
+        console.log(detections);
+
+        if (detections.length === 0) {
+            console.log("there is no face on a picture");
+
+            this.setErrorOnCard();
+            this.setState({
+                resultCode: ResultCode.ERROR_NO_FACE
+            });
+            App.hideById("spinner");
+
+            return;
+        }
+        else {
+            if (detections.length === 1) {
+                result = this.state.faceMatcher.findBestMatch(detections[0].descriptor);
+                console.log(result._label, result._distance);
+            }
+            else {
+                result = detections.map(d => this.state.faceMatcher.findBestMatch(d.descriptor));
+                console.log(result);
+
+                return;
+            }
+        }
+
+        let outputImage = require(`../../resourсes/labeled_images/${result._label}.jpg`);
+        let outputName = result._label.replace(/\s\d$/, '');
+
+        App.hideById("spinner");
+        App.showById("progress");
+        Result.upload({
+            inputSrc: URL.createObjectURL(this.state.file),
+            outputSrc: outputImage,
+            originalName: outputName,
+            distance: result._distance,
+        });
     }
 
     async handleChange(event) {
@@ -86,6 +134,9 @@ class Upload extends React.Component {
         }
 
         App.hideById("result");
+        await this.setState({
+            file: null
+        });
 
         if (this.fileInputRef.current.files.length !== 1) {
             this.setErrorOnCard();
@@ -96,80 +147,55 @@ class Upload extends React.Component {
             return;
         }
 
-        let file = this.fileInputRef.current.files[0];
+        await this.setState({
+            file: this.fileInputRef.current.files[0]
+        });
+
         let cardUpload = document.getElementById("cardUpload");
         let cardHeaderUpload = document.getElementById("cardHeaderUpload");
-        this.setState({
-            fileName: file.name
-        });
         App.showById("spinner");
 
-        if (Upload.fileTypes.includes(file.type)) {
+        if (Upload.fileTypes.includes(this.state.file.type)) {
             cardUpload.className = "card border-success";
             cardHeaderUpload.className = "card-header bg-success";
+
             this.setState({
                 resultCode: ResultCode.SUCCESS
-            });
-
-            // Face detection
-            const image = await faceapi.bufferToImage(file);
-            const detections = await faceAPI.getDetections(image);
-            let result = null;
-
-            console.log(detections);
-
-            if (detections.length === 0) {
-                console.log("there is no face on a picture");
-
-                this.setErrorOnCard();
-                this.setState({
-                    resultCode: ResultCode.ERROR_NO_FACE
-                });
-                App.hideById("spinner");
-
-                return;
-            }
-            else {
-                if (detections.length === 1) {
-                    result = this.state.faceMatcher.findBestMatch(detections[0].descriptor);
-                    console.log(result._label, result._distance);
-                }
-                else {
-                    this.setErrorOnCard();
-                    this.setState({
-                        resultCode: ResultCode.ERROR_FACE_COUNT
-                    });
-                    App.hideById("spinner");
-
-                    return;
-                }
-            }
-            //
-
-            let outputImage = require(`../../resourсes/labeled_images/${result._label}.jpg`);
-            let outputName = result._label.replace(/\s\d$/,'');
-
-            App.hideById("spinner");
-            App.showById("progress");
-            Result.upload({
-                inputSrc: URL.createObjectURL(file),
-                outputSrc: outputImage,
-                originalName: outputName,
-                distance: result._distance
-            });
+            }, this.faceRecognition);
         }
         else {
             this.setErrorOnCard();
+            App.hideById("spinner");
+
             this.setState({
                 resultCode: ResultCode.ERROR_FILE_TYPE
             });
-            App.hideById("spinner");
         }
+    }
+
+    handleChangeNaive() {
+        this.setState({
+            algorithm: Algorithm.NAIVE
+        }, () => {
+            if(this.state.file) {
+                this.faceRecognition()
+            }
+        });
+    }
+
+    handleChangeAdvanced() {
+        this.setState({
+            algorithm: Algorithm.ADVANCED
+        }, () => {
+            if(this.state.file) {
+                this.faceRecognition()
+            }
+        });
     }
 
     render() {
         return (
-            <div className="container pt-3 mt-3" id="cardUploadContainer">
+            <div className="container mt-3" id="cardUploadContainer">
                 <div className="card border-dark" id="cardUpload">
                     <div className="card-header" id="cardHeaderUpload">
                         {this.uploadStatus(this.state.resultCode)}
@@ -177,14 +203,35 @@ class Upload extends React.Component {
 
                     <div className="card-body">
                         <div className="container">
-                            <div className="row">
-                                <div className="col">
+                            <div className="row d-flex justify-content-center">
+                                {/* px */}
+                                <div className="col-12 px-1">
                                     <div className="custom-file">
                                         <input type="file" className="custom-file-input" id="customFile"
                                             ref={this.fileInputRef} onChange={this.handleChange} accept={Upload.fileTypes} />
                                         <label className="custom-file-label" htmlFor="customFile" id="customLabel" data-browse={Content.uploadButton()}>
-                                            {(this.state.fileName) ? this.state.fileName : Content.chooseFile()}
+                                            {(this.state.file) ? this.state.file.name : Content.chooseFile()}
                                         </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="row pt-3 d-flex justify-content-center">
+                                <div className="col-12">
+                                    <span className="float-right">{Content.algorithm()}</span>
+                                </div>
+
+                                <div className="col-12">
+                                    <div className="custom-control custom-radio float-right">
+                                        <input type="radio" id="naive" name="customRadio" className="custom-control-input" onChange={this.handleChangeNaive} />
+                                        <label className="custom-control-label" htmlFor="naive">{Content.naive()}</label>
+                                    </div>
+                                </div>
+
+                                <div className="col-12">
+                                    <div className="custom-control custom-radio float-right">
+                                        <input type="radio" defaultChecked id="advanced" name="customRadio" className="custom-control-input" onChange={this.handleChangeAdvanced} />
+                                        <label className="custom-control-label" htmlFor="advanced">{Content.advanced()}</label>
                                     </div>
                                 </div>
                             </div>

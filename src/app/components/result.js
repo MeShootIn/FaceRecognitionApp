@@ -7,9 +7,6 @@ import App from "../app";
 /**
  * для обрезки - посмотреть как работает функция drawImage ...
  * исправить адаптивность
- * сделать в каждой папке по 1 фото
- * 
- * ещё раз попробовать оптимизировать drawFaceLandmarks с учётом setState(updater[, callback])
  */
 
 const DECIMAL_PLACES = 2;
@@ -56,7 +53,7 @@ class Result extends React.Component {
         let inputImgHidden = document.getElementById("inputImgHidden");
         let outputImgHidden = document.getElementById("outputImgHidden");
         let originalName = document.getElementById("originalNameHidden").value;
-        let percent = parseFloat(document.getElementById("distanceHidden").value) * 100;
+        let percent = (1 - parseFloat(document.getElementById("distanceHidden").value)) * 100;
         let T = 1000;
 
         this.setState({
@@ -109,9 +106,11 @@ class Result extends React.Component {
 
         let inputCanvas = document.getElementById("inputCanvas");
         let outputCanvas = document.getElementById("outputCanvas");
+        let inputImgHidden = document.getElementById("inputImgHidden");
+        let outputImgHidden = document.getElementById("outputImgHidden");
 
-        this.drawImg(inputCanvas, document.getElementById("inputImgHidden"));
-        this.drawImg(outputCanvas, document.getElementById("outputImgHidden"));
+        this.drawImg(inputCanvas, inputImgHidden);
+        this.drawImg(outputCanvas, outputImgHidden);
 
         if (this.state.showDetails) {
             await this.drawFaceLandmarks(this.inputImg, inputCanvas);
@@ -191,7 +190,7 @@ class Result extends React.Component {
 
                 <div className="row pt-3" id="details">
                     <div className="col-12">
-                        <span className="pull-right"><button type="button" id="buttonDetails" className="btn btn-outline-info" onClick={this.handleClickDetails}>{Content.moreDetails()}</button></span>
+                        <span className="float-right"><button type="button" id="buttonDetails" className="btn btn-outline-info" onClick={this.handleClickDetails}>{Content.moreDetails()}</button></span>
                     </div>
 
                     <div className="col-12 text-center">
