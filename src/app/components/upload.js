@@ -104,19 +104,19 @@ class Upload extends React.Component {
             let curRelDist = Math.sqrt(
                 curLabelRelativePosition
                 .map((val, i) => Math.sqrt(
-                    Math.pow((val._x - inputRelativePosition[i]._x)/Math.max(val._x,inputRelativePosition[i]._x),2) + 
-                    Math.pow((val._y - inputRelativePosition[i]._y)/Math.max(val._y,inputRelativePosition[i]._y),2)))
+                    Math.pow((val._x - inputRelativePosition[i]._x),2) + 
+                    Math.pow((val._y - inputRelativePosition[i]._y),2)))
                   .reduce((res, diff) => res + Math.pow(diff, 2), 0)
               )/len;
             console.log("curRelDist = ",curRelDist);
 
-            if(curRelDist < minDist.distance){
+            if(curRelDist < minDist._distance){
                 return {"_label": label, "_distance": curRelDist};
             }else{
                 return minDist;
             }
             
-        }, {"label": "Unknown", "distance": 1.0});
+        }, {"_label": "Unknown", "_distance": 1.0});
         console.log("result = ",result);
         return result;
     }
