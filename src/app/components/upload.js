@@ -8,7 +8,8 @@ import Result from "./result";
 
 
 // Loading imagies and descriptors of base pics
-const JSON_PROFILE = require('../../resourсes/labeledFaceDescriptors.json');
+const JSON_PROFILE_DESC = require('../../resourсes/labeledFaceDescriptors.json');
+const JSON_PROFILE_LAND = require('../../resourсes/labeledFaceLandmarks.json');
 // const imagesDict = {};
 // labels.forEach(label => { imagesDict[label] = require(`../../resourсes/labeled_images/${label}/1.jpg`) });
 //
@@ -56,7 +57,7 @@ class Upload extends React.Component {
 
     async loadingDependences() {
         await faceAPI.loadModels();
-        this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE) });
+        this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE_DESC) });
     };
 
     uploadStatus(resultCode) {
@@ -82,10 +83,54 @@ class Upload extends React.Component {
         }
     }
 
+    faceRecognitionNaive(faceInput, facesProfile){
+        const labels = Object.keys(facesProfile);
+        const inputPosition = Array.from(faceInput.landmarks._positions);
+        const inputRelativePosition = Array.from(faceInput.landmarks.relativePositions);
+        const len = inputPosition.length;
+        const result = labels.reduce((minDist, label) => {
+            const curLabelPosition = Array.from(facesProfile[label].position);
+            const curLabelRelativePosition = Array.from(facesProfile[label].relativePosition);
+
+            let curPosDist = Math.sqrt(
+                curLabelPosition
+                  .map((val, i) => Math.sqrt(
+                    Math.pow((val._x - inputPosition[i]._x)/Math.max(val._x,inputPosition[i]._x),2) + 
+                    Math.pow((val._y - inputPosition[i]._y)/Math.max(val._y,inputPosition[i]._y),2)))
+                  .reduce((res, diff) => res + Math.pow(diff, 2), 0)
+              )/len;
+            console.log("curPosDist = ",curPosDist);
+
+            let curRelDist = Math.sqrt(
+                curLabelRelativePosition
+                .map((val, i) => Math.sqrt(
+                    Math.pow((val._x - inputRelativePosition[i]._x)/Math.max(val._x,inputRelativePosition[i]._x),2) + 
+                    Math.pow((val._y - inputRelativePosition[i]._y)/Math.max(val._y,inputRelativePosition[i]._y),2)))
+                  .reduce((res, diff) => res + Math.pow(diff, 2), 0)
+              )/len;
+            console.log("curRelDist = ",curRelDist);
+
+            if(curRelDist < minDist.distance){
+                return {"label": label, "distance": curRelDist};
+            }else{
+                return minDist;
+            }
+            
+        }, {"label": "Unknown", "distance": 1.0});
+        console.log("result = ",result);
+        return result;
+    }
+
     async faceRecognition() {
         const image = await faceapi.bufferToImage(this.state.file);
-        const detections = await faceAPI.getDetections(image);
+        let detections = null;
         let result = null;
+
+        if(this.state.algorithm === Algorithm.ADVANCED) {
+            detections = await faceAPI.getDetections(image);
+        }else{
+            detections = await faceAPI.getDetections(image, false);
+        }
 
         console.log(detections);
 
@@ -101,14 +146,25 @@ class Upload extends React.Component {
             return;
         }
         else {
+            console.log('here info goes --------');
+            console.log(detections);
             if (detections.length === 1) {
-                result = this.state.faceMatcher.findBestMatch(detections[0].descriptor);
+                if(this.state.algorithm === Algorithm.ADVANCED){
+                    result = this.state.faceMatcher.findBestMatch(detections[0].descriptor);
+                }else{
+                    result = this.faceRecognitionNaive(detections[0],JSON_PROFILE_LAND);
+                }
                 console.log(result._label, result._distance);
+                console.log(JSON_PROFILE_DESC[result._label]);
             }
             else {
-                result = detections.map(d => this.state.faceMatcher.findBestMatch(d.descriptor));
+                if(this.state.algorithm === Algorithm.ADVANCED){
+                    result = detections.map(d => this.state.faceMatcher.findBestMatch(d.descriptor));
+                }else{
+                    result = detections.map(d => this.faceRecognitionNaive(d,JSON_PROFILE_LAND));
+                }
                 console.log(result);
-
+                console.log(JSON_PROFILE_DESC[result[0]._label]);
                 return;
             }
         }
