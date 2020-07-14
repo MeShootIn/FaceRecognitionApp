@@ -92,19 +92,11 @@ class Upload extends React.Component {
             const curLabelPosition = Array.from(facesProfile[label].position);
             const curLabelRelativePosition = Array.from(facesProfile[label].relativePosition);
 
-            // let curPosDist = Math.sqrt(
-            //     curLabelPosition
-            //       .map((val, i) => Math.sqrt(
-            //         Math.pow((val._x - inputPosition[i]._x)/Math.max(val._x,inputPosition[i]._x),2) + 
-            //         Math.pow((val._y - inputPosition[i]._y)/Math.max(val._y,inputPosition[i]._y),2)))
-            //       .reduce((res, diff) => res + Math.pow(diff, 2), 0)
-            //   )/len;
-
             let curRelDist = Math.sqrt(
                 curLabelRelativePosition
                 .map((val, i) => Math.sqrt(
-                    Math.pow((val._x - inputRelativePosition[i]._x)/(Math.max(val._x,inputRelativePosition[i]._x)*0.75),2) + 
-                    Math.pow((val._y - inputRelativePosition[i]._y)/(Math.max(val._x,inputRelativePosition[i]._x)*0.75),2)))
+                    Math.pow((val._x - inputRelativePosition[i]._x),2) + 
+                    Math.pow((val._y - inputRelativePosition[i]._y),2)))
                   .reduce((res, diff) => res + Math.pow(diff, 2), 0)
               )/len;
 
@@ -115,6 +107,7 @@ class Upload extends React.Component {
             }
             
         }, {"_label": "Unknown", "_distance": 1.0});
+        result._distance *= 10;
         return result;
     }
 
