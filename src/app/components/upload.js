@@ -111,7 +111,7 @@ class Upload extends React.Component {
             console.log("curRelDist = ",curRelDist);
 
             if(curRelDist < minDist.distance){
-                return {"label": label, "distance": curRelDist};
+                return {"_label": label, "_distance": curRelDist};
             }else{
                 return minDist;
             }
