@@ -57,6 +57,7 @@ class App extends React.Component {
     elem.hidden = true;
   }
 
+  // what is the hidden button?
   render() {
     return (
       <div>
@@ -64,11 +65,11 @@ class App extends React.Component {
         <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.RU)} hidden></button>
 
         <Navbar />
-        <Description />
+        <Description language={App.language}/>
         <Gallery />
         <Upload />
         <Result />
-        <Instruction />
+        <Instruction language={App.language}/>
         <Footer />
       </div>
     );
