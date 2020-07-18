@@ -89,7 +89,6 @@ class Upload extends React.Component {
         const inputRelativePosition = Array.from(faceInput.landmarks.relativePositions);
         const len = inputPosition.length;
         const result = labels.reduce((minDist, label) => {
-            const curLabelPosition = Array.from(facesProfile[label].position);
             const curLabelRelativePosition = Array.from(facesProfile[label].relativePosition);
 
             let curRelDist = Math.sqrt(
