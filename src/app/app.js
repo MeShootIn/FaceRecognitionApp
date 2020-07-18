@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Content from './components/content';
 import Navbar from './components/navbar';
 import Description from './components/description';
 import Gallery from './components/gallery';
@@ -65,12 +66,12 @@ class App extends React.Component {
         <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.RU)} hidden></button>
 
         <Navbar />
-        <Description language={App.language}/>
-        <Gallery />
+        <Description language={Content.Languages[App.language]}/>
+        <Gallery language={Content.Languages[App.language]}/>
         <Upload />
         <Result />
-        <Instruction language={App.language}/>
-        <Footer />
+        <Instruction language={Content.Languages[App.language]}/>
+        <Footer language={Content.Languages[App.language]}/>
       </div>
     );
   }
