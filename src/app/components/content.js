@@ -2,7 +2,10 @@ import App from "../app";
 
 
 class Content {
-    static Languages = [ "EN", "RU" ];
+    static Languages = {
+        EN: 0,
+        RU: 1
+    };
     
     static HerokuLink = "https://seriesface.herokuapp.com/";
     static Celebrities = require("../../resourсes/dataset.json");
@@ -18,21 +21,37 @@ class Content {
         return contents[App.language];
     }
 
-    static description = {
-        "EN":
-            "Have you ever imagined yourself as a character in a popular series? What star you could easily replace on " +
-            "the set? Find out now! Just upload image of your face and we will show you a character that you looks like.",
-        "RU":
-            "Вы когда-нибудь представляли себя персонажем популярного сериала? Какую звезду Вы могли бы легко заменить " +
-            "на съёмочной площадке? Узнайте сейчас! Просто загрузите изображение своего лица, и мы покажем персонажа, "  +
-            "который выглядит как Вы."
-    };
+    static description = [
+        "Have you ever imagined yourself as a character in a popular series? What star you could easily replace on " +
+        "the set? Find out now! Just upload image of your face and we will show you a character that you looks like.",
+        
+        "Вы когда-нибудь представляли себя персонажем популярного сериала? Какую звезду Вы могли бы легко заменить " +
+        "на съёмочной площадке? Узнайте сейчас! Просто загрузите изображение своего лица, и мы покажем персонажа, "  +
+        "который выглядит как Вы."
+    ];
 
     static gallery = {
-        "title" : {
-            "EN": "Gallery",
-            "RU": "Галерея"
-        }
+        "title" : [
+            "Gallery",
+            "Галерея"
+        ]
+    }
+
+    static buttons = {
+        "previous": [
+            "Previous",
+            "Следующий"
+        ],
+
+        "next": [
+            "Next",
+            "Предыдущий"
+        ],
+
+        "upload": [
+            "Upload",
+            "Загрузить"
+        ]
     }
 
     static previous() {
@@ -158,6 +177,10 @@ class Content {
         return Content.Celebrities[originalName][App.language];
     }
 
+    static celebrityNameNew(originalName, lang) {
+        return Content.Celebrities[originalName][lang];
+    }
+
     static on() {
         return Content.content([
             " on",
@@ -167,63 +190,59 @@ class Content {
 
     static instruction = {
         'titles': {
-            "first" : {
-                "EN": "Upload a photo",
-                "RU": "Загрузите фотографию"
-            },
+            "first" : [
+                "Upload a photo",
+                "Загрузите фотографию"
+            ],
 
-            "second" : {
-                "EN": "The system detects the face",
-                "RU": "Система распознает лицо"
-            },
+            "second" : [
+                "The system detects the face",
+                "Система распознает лицо"
+            ],
 
-            "third" : {
-                "EN": "Enjoy the result!",
-                "RU": "Всё готово!"
-            },
+            "third" : [
+                "Enjoy the result!",
+                "Всё готово!"
+            ],
         },
 
         "descriptions" : {
-            "first" : {
-                "EN":
-                    "There should be only one person in the photo. Face recognition accuracy depends on the resolution and " +
-                    "quality of a face image.",
-                "RU":
-                    "На фотографии должен быть только один человек. Точность распознавания лица зависит от разрешения и " +
-                    "качества изображения лица."
-            },
+            "first" : [
+                "There should be only one person in the photo. Face recognition accuracy depends on the resolution and " +
+                "quality of a face image.",
+                
+                "На фотографии должен быть только один человек. Точность распознавания лица зависит от разрешения и " +
+                "качества изображения лица."
+            ],
 
-            "second" : {
-                "EN":
-                    "The system recognizes a face and creates a face pattern. She is able to find key components of the face, " +
-                    "including eyebrows, eyes, nose, mouth and position.",
-                "RU":
-                    "Система распознает лицо и создает шаблон лица. Она способна найти ключевые компоненты лица, в том числе " +
-                    "брови, глаза, нос, рот и положение."
-            },
+            "second" : [
+                "The system recognizes a face and creates a face pattern. She is able to find key components of the face, " +
+                "including eyebrows, eyes, nose, mouth and position.",
 
-            "third" : {
-                "EN": "The Neural Network compares the person with celebrity faces and suggests the most similar one.",
-                "RU": "Нейронная сеть сравнивает фото человека со знаменитостями и предлагает наиболее похожее."
-            },
+                "Система распознает лицо и создает шаблон лица. Она способна найти ключевые компоненты лица, в том числе " +
+                "брови, глаза, нос, рот и положение."
+            ],
+
+            "third" : [
+                "The Neural Network compares the person with celebrity faces and suggests the most similar one.",
+                "Нейронная сеть сравнивает фото человека со знаменитостями и предлагает наиболее похожее."
+            ],
         }
-
     }
 
     static footer = {
-        "share" : {
-            "EN": "Tell about us",
-            "RU": "Расскажите о нас"
-        },
+        "share" : [
+            "Tell about us",
+            "Расскажите о нас"
+        ],
 
-        "disclaimer": {
-            "EN":
-                "We do not store uploaded photos. Photos are deleted after recognition. If you want to share it, it " +
-                "will be saved in the appropriate social network.",
-            "RU":
-                "Мы не храним загруженные фотографии. Фотографии удаляются после распознавания. Если Вы захотите поделиться " +
-                "ею, она будет сохранена в соответствующей социальной сети."
-        }
+        "disclaimer": [
+            "We do not store uploaded photos. Photos are deleted after recognition. If you want to share it, it " +
+            "will be saved in the appropriate social network.",
+
+            "Мы не храним загруженные фотографии. Фотографии удаляются после распознавания. Если Вы захотите поделиться " +
+            "ею, она будет сохранена в соответствующей социальной сети."
+        ]
     }
 }
 

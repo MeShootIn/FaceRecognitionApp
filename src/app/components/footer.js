@@ -32,19 +32,19 @@ class Footer extends React.Component {
                     </div>
 
                     <div className="col-12">
-                        <button type="button" className="btn btn-twitter btn-lg" onClick={this.shareTwitter}>
+                        <button type="button" className="btn btn-twitter btn-lg" onClick={this.shareTwitter.bind(this)}>
                             <i className="fab fa-twitter"></i>
                         </button>
 
-                        <button type="button" className="btn btn-facebook btn-lg" onClick={this.shareFacebook}>
+                        <button type="button" className="btn btn-facebook btn-lg" onClick={this.shareFacebook.bind(this)}>
                             <i className="fab fa-facebook-f"></i>
                         </button>
 
-                        <button type="button" className="btn btn-reddit btn-lg" onClick={this.shareReddit}>
+                        <button type="button" className="btn btn-reddit btn-lg" onClick={this.shareReddit.bind(this)}>
                             <i className="fab fa-reddit"></i>
                         </button>
 
-                        <button type="button" className="btn btn-vk btn-lg" onClick={this.shareVK}>
+                        <button type="button" className="btn btn-vk btn-lg" onClick={this.shareVK.bind(this)}>
                             <i className="fab fa-vk"></i>
                         </button>
                     </div>

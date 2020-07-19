@@ -11,34 +11,26 @@ import Instruction from './components/instruction';
 
 
 class App extends React.Component {
-  static Languages = {
-    EN: 0,
-    RU: 1
-  };
-
-  static language = App.Languages.EN;
+  static language = 0;
 
   constructor(props) {
     super(props);
-
     this.state = {
-      language: App.language
+      language: Content.Languages.EN
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.set = this.switchLanguage.bind(this);
   }
 
-  static setLanguage(lang) {
-    let buttons = document.getElementsByClassName("langButtonHidden");
-    buttons[lang].click();
-  }
+  switchLanguage(lang) {
+    let old_lang = null;
 
-  handleClick(lang) {
-    if (lang !== App.language) {
+    if (lang !== this.state.language) {
+      old_lang = this.state.language;
       App.language = lang;
-      this.setState({
-        language: App.language
-      });
+      this.setState({ language: lang });
     }
+
+    return old_lang;
   }
 
   static scrollToAnchor(anchor) {
@@ -58,24 +50,19 @@ class App extends React.Component {
     elem.hidden = true;
   }
 
-  // what is the hidden button?
   render() {
     return (
       <div>
-        <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.EN)} hidden></button>
-        <button className="langButtonHidden" onClick={() => this.handleClick(App.Languages.RU)} hidden></button>
-
-        <Navbar />
-        <Description language={Content.Languages[App.language]}/>
-        <Gallery language={Content.Languages[App.language]}/>
+        <Navbar switchLanguage={(lang) => this.switchLanguage(lang)}/>
+        <Description language={this.state.language}/>
+        <Gallery language={this.state.language}/>
         <Upload />
         <Result />
-        <Instruction language={Content.Languages[App.language]}/>
-        <Footer language={Content.Languages[App.language]}/>
+        <Instruction language={this.state.language}/>
+        <Footer language={this.state.language}/>
       </div>
     );
   }
-
 }
 
 export default App;

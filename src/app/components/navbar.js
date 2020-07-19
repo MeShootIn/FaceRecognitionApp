@@ -1,34 +1,29 @@
 import React from "react";
-import App from "../app";
+import Content from "./content";
 
 
 class Navbar extends React.Component {
-    switchToRU() {
-        App.setLanguage(App.Languages.RU);
+    switchTo(lang) {
+        const old_lang = this.props.switchLanguage(lang);
 
-        let ruButton = document.getElementById("ruButton");
-        ruButton.className = "btn nav-link active";
-        let enButton = document.getElementById("enButton");
-        enButton.className = "btn nav-link";
+        if (old_lang !== null) {
+            let btn_off = document.getElementById((old_lang === Content.Languages.EN ? "EN" : "RU") + "_Button");
+            btn_off.className = "btn nav-link";
+
+            let btn_on = document.getElementById((lang === Content.Languages.EN ? "EN" : "RU") + "_Button");
+            btn_on.className = "btn nav-link active";
+        }
     }
 
-    switchToEN() {
-        App.setLanguage(App.Languages.EN);
-
-        let ruButton = document.getElementById("ruButton");
-        ruButton.className = "btn nav-link";
-        let enButton = document.getElementById("enButton");
-        enButton.className = "btn nav-link active";
-    }
-
+    // What is navbar-toggler?
     render() {
         return (
             <nav className="navbar navbar-expand navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="/#">
+                    <a className="navbar-brand" href="/#" id="brand">
                         <img src="favicon.svg" width="32" height="32" focusable="false" className="d-inline-block align-top"
                             alt="Icon" />
-                        SeriesFace
+                        {Content.AppName}
                     </a>
 
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -38,11 +33,11 @@ class Navbar extends React.Component {
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
-                                <button className="btn nav-link" id="ruButton" onClick={this.switchToRU}>RU</button>
+                                <button className="btn nav-link" id="RU_Button" onClick={() => this.switchTo(Content.Languages.RU)}>RU</button>
                             </li>
 
                             <li className="nav-item">
-                                <button className="btn nav-link active" id="enButton" onClick={this.switchToEN}>EN</button>
+                                <button className="btn nav-link active" id="EN_Button" onClick={() => this.switchTo(Content.Languages.EN)}>EN</button>
                             </li>
                         </ul>
                     </div>

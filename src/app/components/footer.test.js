@@ -19,25 +19,28 @@ afterEach(() => {
 });
 // ===============
 
-it("Footer test", () => {
-    let test = language => {
-        act(() => {
-            render(<Footer language={language} />, container);
-        });
-        expect(
-            container.querySelector('[id="share-title"]').textContent
-        ).toBe(Content.footer.share[language]);
-        expect(
-            container.querySelector('[id="disclaimer"]').textContent
-        ).toBe(Content.footer.disclaimer[language]);
-    }
+describe('Footer tests', () => {
+    it('render test', () => {
+        let test = language => {
+            act(() => {
+                render(<Footer language={language} />, container);
+            });
+            expect(
+                container.querySelector('[id="share-title"]').textContent
+            ).toBe(Content.footer.share[language]);
+            expect(
+                container.querySelector('[id="disclaimer"]').textContent
+            ).toBe(Content.footer.disclaimer[language]);
+        }
 
-    for (let lang of Content.Languages) { test(lang); }
-
-    expect(
-        container.querySelector('[id="copyright"]').textContent
-    ).toContain(Content.company.years + ' - ' + Content.company.name);
-    expect(
-        container.querySelector('[id="copyright"]').getAttribute("href")
-    ).toEqual(Content.company.website);
+        test(Content.Languages.EN);
+        test(Content.Languages.RU);
+        
+        expect(
+            container.querySelector('[id="copyright"]').textContent
+        ).toContain(Content.company.years + ' - ' + Content.company.name);
+        expect(
+            container.querySelector('[id="copyright"]').getAttribute("href")
+        ).toEqual(Content.company.website);
+    })
 });

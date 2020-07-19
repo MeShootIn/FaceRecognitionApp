@@ -19,33 +19,36 @@ afterEach(() => {
 });
 // ===============
 
-it("Instruction test", () => {
-    let test = language => {
-        act(() => {
-            render(<Instruction language={language} />, container);
-        });
-    
-        expect(
-            container.querySelector('[id="firstStep"]').textContent
-        ).toBe('1. ' + Content.instruction.titles.first[language]);
-        expect(
-            container.querySelector('[id="firstDesc"]').textContent
-        ).toBe(Content.instruction.descriptions.first[language]);
-    
-        expect(
-            container.querySelector('[id="secondStep"]').textContent
-        ).toBe('2. ' + Content.instruction.titles.second[language]);
-        expect(
-            container.querySelector('[id="secondDesc"]').textContent
-        ).toBe(Content.instruction.descriptions.second[language]);
-    
-        expect(
-            container.querySelector('[id="thirdStep"]').textContent
-        ).toBe('3. ' + Content.instruction.titles.third[language]);
-        expect(
-            container.querySelector('[id="thirdDesc"]').textContent
-        ).toBe(Content.instruction.descriptions.third[language]);
-    }
+describe('Instruction tests', () => {
+    it('render test', () => {
+        let test = language => {
+            act(() => {
+                render(<Instruction language={language} />, container);
+            });
+        
+            expect(
+                container.querySelector('[id="firstStep"]').textContent
+            ).toBe('1. ' + Content.instruction.titles.first[language]);
+            expect(
+                container.querySelector('[id="firstDesc"]').textContent
+            ).toBe(Content.instruction.descriptions.first[language]);
+        
+            expect(
+                container.querySelector('[id="secondStep"]').textContent
+            ).toBe('2. ' + Content.instruction.titles.second[language]);
+            expect(
+                container.querySelector('[id="secondDesc"]').textContent
+            ).toBe(Content.instruction.descriptions.second[language]);
+        
+            expect(
+                container.querySelector('[id="thirdStep"]').textContent
+            ).toBe('3. ' + Content.instruction.titles.third[language]);
+            expect(
+                container.querySelector('[id="thirdDesc"]').textContent
+            ).toBe(Content.instruction.descriptions.third[language]);
+        }
 
-    for (let lang of Content.Languages) { test(lang); }
+        test(Content.Languages.EN);
+        test(Content.Languages.RU);
+    })
 });

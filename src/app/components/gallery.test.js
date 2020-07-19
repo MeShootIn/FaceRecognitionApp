@@ -21,16 +21,19 @@ afterEach(() => {
 
 
 // How to test Gallery?
-it("Gallery test", () => {
-    let test = language => {
-        act(() => {
-            render(<Gallery language={language} />, container);
-        });
+describe('Gallery tests', () => {
+    it('render test', () => {
+        let test = language => {
+            act(() => {
+                render(<Gallery language={language} />, container);
+            });
 
-        expect(
-            container.querySelector('[id="gallery-title"]').textContent
-        ).toBe(Content.gallery.title[language]);
-    }
+            expect(
+                container.querySelector('[id="gallery-title"]').textContent
+            ).toBe(Content.gallery.title[language]);
+        }
 
-    for (let lang of Content.Languages) { test(lang); }
+        test(Content.Languages.EN);
+        test(Content.Languages.RU);
+    })
 });

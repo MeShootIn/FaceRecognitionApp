@@ -19,13 +19,16 @@ afterEach(() => {
 });
 // ===============
 
-it("Description test", () => {
-    let test = language => {
-        act(() => {
-            render(<Description language={language} />, container);
-        });
-        expect(container.textContent).toBe(Content.description[language]);
-    }
+describe('Description tests', () => {
+    it('render test', () => {
+        let test = language => {
+            act(() => {
+                render(<Description language={language} />, container);
+            });
+            expect(container.textContent).toBe(Content.description[language]);
+        }
 
-    for (let lang of Content.Languages) { test(lang); }
+        test(Content.Languages.EN);
+        test(Content.Languages.RU);
+    })
 });
