@@ -2,9 +2,12 @@
     "folder": "test_faces",
     "persons": {
         "Adam Sandler": 5,
+        "Emma Stone": 6,
         "Enrique Iglesias": 6,
+        "Hugh Jackman": 6,
         "Lily James": 6,
+        "Michael Rosenbaum": 5,
         "Olivia Wilde": 4,
-        "Michael Rosenbaum": 5
+        "Ryan Gosling": 6
     }
 }
