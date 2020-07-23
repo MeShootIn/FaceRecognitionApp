@@ -1,0 +1,10 @@
+{   
+    "folder": "test_faces",
+    "persons": {
+        "Adam Sandler": 5,
+        "Enrique Iglesias": 6,
+        "Lily James": 6,
+        "Olivia Wilde": 4,
+        "Michael Rosenbaum": 5
+    }
+}

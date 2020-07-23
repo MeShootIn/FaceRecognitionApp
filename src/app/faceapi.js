@@ -21,10 +21,18 @@ const MAX_FACES_DETECTION = 7
 export async function loadModels() {
   console.log('face-api create models...');
   const MODEL_URL = process.env.PUBLIC_URL + '/weights';
-  await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL); 
+  await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
   await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
   await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
   console.log('face-api loaded models!');
+}
+
+// for tests
+export async function loadModelsFromDisk() {
+  const MODEL_URL = './public/weights';
+  await faceapi.nets.ssdMobilenetv1.loadFromDisk(MODEL_URL);
+  await faceapi.nets.faceLandmark68Net.loadFromDisk(MODEL_URL);
+  await faceapi.nets.faceRecognitionNet.loadFromDisk(MODEL_URL);
 }
 
 export async function createMatcher(faceProfile) {
