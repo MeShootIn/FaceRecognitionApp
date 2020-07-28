@@ -12,7 +12,7 @@ import * as faceapi from 'face-api.js';
 // const USE_TINY_MODEL = true;
 const DISTANCE_THRESHOLD = 0.9999
 const MIN_CONFIDANCE_DETECTION = 0.2
-const MAX_FACES_DETECTION = 20
+const MAX_FACES_DETECTION = 15
 
 // ********************************************************
 // Class
