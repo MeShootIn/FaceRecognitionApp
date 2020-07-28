@@ -12,7 +12,7 @@ import * as faceapi from 'face-api.js';
 // const USE_TINY_MODEL = true;
 const DISTANCE_THRESHOLD = 0.9999
 const MIN_CONFIDANCE_DETECTION = 0.2
-const MAX_FACES_DETECTION = 7
+const MAX_FACES_DETECTION = 20
 
 // ********************************************************
 // Class
@@ -45,7 +45,7 @@ export async function createMatcher(faceProfile) {
   return faceMatcher;
 }
 
-export async function getDetections(image, withDescriptor=true) {
+export async function getDetectionsWithLogs(image, withDescriptor=true) {
   const options = new faceapi.SsdMobilenetv1Options({ minConfidence: MIN_CONFIDANCE_DETECTION , 
     maxResults: MAX_FACES_DETECTION });
     let detections = null;
@@ -67,6 +67,27 @@ export async function getDetections(image, withDescriptor=true) {
     .withFaceLandmarks();
   }  
   console.log('face-api completed face detection.');    
+  return detections;
+}
+
+export async function getDetections(image, withDescriptor=true) {
+  const options = new faceapi.SsdMobilenetv1Options({ minConfidence: MIN_CONFIDANCE_DETECTION , 
+    maxResults: MAX_FACES_DETECTION });
+    let detections = null;
+  // if(IsSingleFace){
+  //   detections = await faceapi.detectSingleFace(image, options)
+  //   .withFaceLandmarks().withFaceDescriptor();
+  // }else{
+  //   detections = await faceapi.detectAllFaces(image, options)
+  //   .withFaceLandmarks().withFaceDescriptors();
+  // }
+  if(withDescriptor){
+    detections = await faceapi.detectAllFaces(image, options)
+    .withFaceLandmarks().withFaceDescriptors();
+  }else{
+    detections = await faceapi.detectAllFaces(image, options)
+    .withFaceLandmarks();
+  }  
   return detections;
 }
 

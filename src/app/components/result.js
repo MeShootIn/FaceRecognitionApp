@@ -1,15 +1,19 @@
 import React from "react";
 import Content from "./content";
+import * as faceAPI from "../faceapi";
 import * as faceapi from 'face-api.js';
 import App from "../app";
+import Upload from "./upload";
 
 
-/**
- * для обрезки - посмотреть как работает функция drawImage ...
- * исправить адаптивность
- */
 
 const DECIMAL_PLACES = 2;
+const T = 1000;
+
+/**
+ * лагает this.move + остановка при новом ввызове update
+ * сделать this.state.scrolled: bool для отмены this.move через setState
+ */
 
 class Result extends React.Component {
     constructor(props) {
@@ -17,119 +21,117 @@ class Result extends React.Component {
 
         this.state = {
             showDetails: false,
-            result: null
+            imageIndex: 0
         };
-        this.inputImg = null;
-        this.outputImg = null;
 
-        this.updateCanvas = this.updateCanvas.bind(this);
+        this.update = this.update.bind(this);
         this.move = this.move.bind(this);
         this.frame = this.frame.bind(this);
         this.handleClickHidden = this.handleClickHidden.bind(this);
         this.handleClickDetails = this.handleClickDetails.bind(this);
+        this.handleClickPrev = this.handleClickPrev.bind(this);
+        this.handleClickNext = this.handleClickNext.bind(this);
+        this.getCurrentPercent = this.getCurrentPercent.bind(this);
+        this.getOutputImg = this.getOutputImg.bind(this);
     }
 
-    static upload(args) {
-        let inputImgHidden = document.getElementById("inputImgHidden");
-        let outputImgHidden = document.getElementById("outputImgHidden");
-        let distanceHidden = document.getElementById("distanceHidden");
-        let originalNameHidden = document.getElementById("originalNameHidden");
+    static upload() {
         let uploadButtonHidden = document.getElementById("uploadButtonHidden");
-
-        inputImgHidden.src = args.inputSrc;
-        originalNameHidden.value = args.originalName;
-        distanceHidden.value = args.distance;
-
-        inputImgHidden.onload = () => {
-            outputImgHidden.src = args.outputSrc;
-
-            outputImgHidden.onload = () => {
-                uploadButtonHidden.click();
-            }
-        }
+        uploadButtonHidden.click();
     }
 
-    handleClickHidden() {
-        let inputImgHidden = document.getElementById("inputImgHidden");
-        let outputImgHidden = document.getElementById("outputImgHidden");
-        let originalName = document.getElementById("originalNameHidden").value;
-        let percent = (1 - parseFloat(document.getElementById("distanceHidden").value)) * 100;
-        let T = 1000;
+    async handleClickHidden() {
+        let scrollButtonRow = document.getElementById("scrollButtonRow");
 
-        this.setState({
+        await this.setState({
             showDetails: false,
-            result: {
-                originalName: originalName,
-                percent: percent
-            },
+            imageIndex: 0
         });
-        this.inputImg = inputImgHidden;
-        this.outputImg = outputImgHidden;
+
+        if (Upload.resultObject.info.length === 1) {
+            scrollButtonRow.hidden = true;
+        }
+        else {
+            scrollButtonRow.hidden = false;
+        }
 
         App.showById("result");
-        this.move(percent, T);
         App.scrollToAnchor("result");
+        this.move(this.getCurrentPercent());
     }
 
     componentDidUpdate() {
-        this.updateCanvas();
+        this.update();
     }
 
-    drawImg(inputCanvas, inputImgHidden) {
-        let ctxInput = inputCanvas.getContext("2d");
+    drawImg(img, canvas) {
+        let ctx = canvas.getContext("2d");
 
-        if (!ctxInput) {
+        if (!ctx) {
             alert(Content.errorCanvas());
             return;
         }
 
-        let inputImg = new Image();
-        inputImg.src = inputImgHidden.src;
+        let image = new Image();
+        image.src = img.src;
 
-        inputImg.onload = () => {
-            inputCanvas.width = inputImgHidden.width;
-            inputCanvas.height = inputImgHidden.height;
+        image.onload = () => {
+            canvas.width = image.width;
+            canvas.height = image.height;
 
-            ctxInput.drawImage(inputImg, 0, 0);
+            ctx.drawImage(image, 0, 0);
         };
 
-        inputImg.onerror = () => {
+        image.onerror = () => {
             alert(Content.errorImageUpload());
             return;
         };
     }
 
-    async updateCanvas() {
-        if (!this.state.result) {
+    getCurrentPercent() {
+        return (1 - parseFloat(Upload.resultObject.info[this.state.imageIndex].distance)) * 100;
+    }
+
+    getInputImg() {
+        return Upload.resultObject.inputImg;
+    }
+
+    getOutputImg() {
+        return Upload.resultObject.info[this.state.imageIndex].outputImg;
+    }
+
+    async update() {
+        if (Upload.resultObject.info === null) {
             return;
         }
 
+        Result.disableButtons(true);
+
         let inputCanvas = document.getElementById("inputCanvas");
         let outputCanvas = document.getElementById("outputCanvas");
-        let inputImgHidden = document.getElementById("inputImgHidden");
-        let outputImgHidden = document.getElementById("outputImgHidden");
 
-        this.drawImg(inputCanvas, inputImgHidden);
-        this.drawImg(outputCanvas, outputImgHidden);
+        this.drawImg(this.getInputImg(), inputCanvas);
+        this.drawImg(this.getOutputImg(), outputCanvas);
 
         if (this.state.showDetails) {
-            await this.drawFaceLandmarks(this.inputImg, inputCanvas);
-            this.drawImg(outputCanvas, this.outputImg);
-            await this.drawFaceLandmarks(this.outputImg, outputCanvas);
+            await this.drawFaceLandmarks(this.getInputImg(), inputCanvas, this.state.imageIndex);
+            this.drawImg(this.getOutputImg(), outputCanvas);
+            await this.drawFaceLandmarks(this.getOutputImg(), outputCanvas, 0);
         }
+
+        Result.disableButtons(false);
     }
 
-    async drawFaceLandmarks(img, canvas) {
+    async drawFaceLandmarks(img, canvas, faceIndex) {
         const displaySize = { width: img.width, height: img.height };
         faceapi.matchDimensions(canvas, displaySize);
 
-        const detectionsWithLandmarks = await faceapi.detectAllFaces(img).withFaceLandmarks();
-        const resizedResults = faceapi.resizeResults(detectionsWithLandmarks, displaySize);
+        const detectionsWithLandmarks = (await faceAPI.getDetections(img)).sort((a, b) => (a.alignedRect._box._x - b.alignedRect._box._x));
+        const resizedResults = faceapi.resizeResults([detectionsWithLandmarks[faceIndex]], displaySize);
         faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
     }
 
-    frame(args) {
-        let { target, t, T } = args;
+    frame(target, t) {
         let progressBar = document.getElementById("progressBar");
         let percentMatch = document.getElementById("percentMatch");
 
@@ -148,59 +150,76 @@ class Result extends React.Component {
         }
     }
 
-    async move(target, T) {
+    async move(target) {
         for (let t = 0; t < T; ++t) {
-            setTimeout(this.frame, t, {
-                target: target,
-                t: t,
-                T: T
-            });
+            setTimeout(this.frame, t, target, t);
         }
+    }
+
+    static disableButtons(value) {
+        ["buttonPrevFace", "buttonNextFace", "naive", "advanced", "buttonDetails"].forEach((buttonId) => {
+            document.getElementById(buttonId).disabled = value;
+        })
     }
 
     handleClickDetails() {
         let percentMatch = document.getElementById("percentMatch");
-        let buttonDetails = document.getElementById("buttonDetails");
-
-        buttonDetails.disabled = true;
+        let scrollButtonRow = document.getElementById("scrollButtonRow");
 
         this.setState((state) => ({
             showDetails: !state.showDetails
-        }), async () => {
-            await this.updateCanvas();
-            buttonDetails.disabled = false;
+        }), () => {
+            if (this.state.showDetails) {
+                if(Upload.resultObject.info.length > 1) {
+                    scrollButtonRow.hidden = false;
+                }
+                percentMatch.innerHTML = this.getCurrentPercent().toFixed(DECIMAL_PLACES);
+            }
+            else {
+                scrollButtonRow.hidden = true;
+                percentMatch.innerHTML = parseInt(this.getCurrentPercent());
+            }
         });
+    }
 
-        if (!this.state.showDetails) {
-            percentMatch.innerHTML = this.state.result.percent.toFixed(DECIMAL_PLACES);
+    handleClickPrev() {
+        if (document.getElementById("buttonPrevFace").disabled) {
+            return;
         }
-        else {
-            percentMatch.innerHTML = parseInt(this.state.result.percent);
+
+        this.setState((state) => ({
+            imageIndex: (state.imageIndex > 0) ? state.imageIndex - 1 : Upload.resultObject.info.length - 1
+        }), () => {
+            this.move(this.getCurrentPercent());
+        });
+    }
+
+    handleClickNext() {
+        if (document.getElementById("buttonNextFace").disabled) {
+            return;
         }
+
+        this.setState((state) => ({
+            imageIndex: (state.imageIndex < Upload.resultObject.info.length - 1) ? state.imageIndex + 1 : 0
+        }), () => {
+            this.move(this.getCurrentPercent());
+        });
     }
 
     render() {
         return (
             <div className="container mt-5" id="result" hidden>
-                <img id="inputImgHidden" alt="inputHidden" hidden></img>
-                <img id="outputImgHidden" alt="outputHidden" hidden></img>
-                <input id="originalNameHidden" type="text" hidden></input>
-                <input id="distanceHidden" type="text" hidden></input>
                 <button id="uploadButtonHidden" onClick={this.handleClickHidden} hidden></button>
 
-                <div className="row pt-3" id="details">
-                    <div className="col-12">
-                        <span className="float-right"><button type="button" id="buttonDetails" className="btn btn-outline-info" onClick={this.handleClickDetails}>{Content.moreDetails()}</button></span>
-                    </div>
-
-                    <div className="col-12 text-center">
+                <div className="row pt-3">
+                    <div className="col text-center">
                         <h2>
-                            {Content.youLookLike()}<strong>{(this.state.result) ? Content.celebrityName(this.state.result.originalName) : null}</strong>{Content.on()}
+                            {Content.youLookLike()}<strong>{(Upload.resultObject.info !== null) ? Content.celebrityName(Upload.resultObject.info[this.state.imageIndex].outputName) : null}</strong>{Content.on()}
                         </h2>
                     </div>
                 </div>
 
-                <div className="row">
+                <div className="row pt-3">
                     <div className="col">
                         <div id="progress" className="progress" hidden>
                             <div id="progressBar" className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -210,20 +229,38 @@ class Result extends React.Component {
                     </div>
                 </div>
 
-                <div className="d-flex justify-content-center">
-                    <div className="row pt-3">
-                        <div className="col-md-12">
-                            <canvas id="inputCanvas">{Content.errorCanvas()}</canvas>
-                        </div>
+                <div className="row pt-1">
+                    <div className="col">
+                        <span className="float-right">
+                            <button type="button" id="buttonDetails" className="btn btn-outline-warning btn-lg btn-block" onClick={this.handleClickDetails}>{Content.moreDetails()}</button>
+                        </span>
                     </div>
                 </div>
 
-                <div className="d-flex justify-content-center">
-                    <div className="row pt-3">
-                        <div className="col-md-12">
-                            <canvas id="outputCanvas">{Content.errorCanvas()}</canvas>
-                        </div>
+                <div className="row d-flex justify-content-center pt-5" id="scrollButtonRow" hidden>
+                    <div className="col">
+                        <span className="float-left">
+                            <button type="button" id="buttonPrevFace" className="btn btn-info btn-lg" onClick={this.handleClickPrev}>
+                                <i className="fas fa-angle-double-left"></i>
+                            </button>
+                        </span>
                     </div>
+
+                    <div className="col">
+                        <span className="float-right">
+                            <button type="button" id="buttonNextFace" className="btn btn-info btn-lg" onClick={this.handleClickNext}>
+                                <i className="fas fa-angle-double-right"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+                <div className="row d-flex justify-content-center pt-3">
+                    <canvas className="col-11 col-sm-10 col-md-9 col-xl-8" id="inputCanvas">{Content.errorCanvas()}</canvas>
+                </div>
+
+                <div className="row d-flex justify-content-center pt-3">
+                    <canvas className="col-11 col-sm-10 col-md-9 col-xl-8" id="outputCanvas">{Content.errorCanvas()}</canvas>
                 </div>
             </div>
         );

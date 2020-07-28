@@ -16,7 +16,7 @@ const JSON_PROFILE_LAND = require('../../resourсes/labeledFaceLandmarks.json');
 
 const ResultCode = {
     INIT: 0,
-    SUCCESS: 1,
+    SUCCESS_UPLOAD: 1,
     ERROR_FILE_COUNT: 2,
     ERROR_FILE_TYPE: 3,
     ERROR_NO_FACE: 4
@@ -57,7 +57,9 @@ class Upload extends React.Component {
 
     async loadingDependences() {
         await faceAPI.loadModels();
-        this.setState({ faceMatcher: await faceAPI.createMatcher(JSON_PROFILE_DESC) });
+        this.setState({
+            faceMatcher: await faceAPI.createMatcher(JSON_PROFILE_DESC)
+        });
     };
 
     uploadStatus(resultCode) {
@@ -65,7 +67,7 @@ class Upload extends React.Component {
             case ResultCode.INIT: {
                 return Content.uploadYourPicture();
             }
-            case ResultCode.SUCCESS: {
+            case ResultCode.SUCCESS_UPLOAD: {
                 return Content.successUpload();
             }
             case ResultCode.ERROR_FILE_COUNT: {
@@ -83,46 +85,51 @@ class Upload extends React.Component {
         }
     }
 
-    faceRecognitionNaive(faceInput, facesProfile){
+    faceRecognitionNaive(faceInput, facesProfile) {
         const labels = Object.keys(facesProfile);
         const inputPosition = Array.from(faceInput.landmarks._positions);
         const inputRelativePosition = Array.from(faceInput.landmarks.relativePositions);
         const len = inputPosition.length;
         const result = labels.reduce((minDist, label) => {
-            const curLabelPosition = Array.from(facesProfile[label].position);
             const curLabelRelativePosition = Array.from(facesProfile[label].relativePosition);
 
             let curRelDist = Math.sqrt(
                 curLabelRelativePosition
-                .map((val, i) => Math.sqrt(
-                    Math.pow((val._x - inputRelativePosition[i]._x),2) + 
-                    Math.pow((val._y - inputRelativePosition[i]._y),2)))
-                  .reduce((res, diff) => res + Math.pow(diff, 2), 0)
-              )/len;
+                    .map((val, i) => Math.sqrt(
+                        Math.pow((val._x - inputRelativePosition[i]._x), 2) +
+                        Math.pow((val._y - inputRelativePosition[i]._y), 2)))
+                    .reduce((res, diff) => res + Math.pow(diff, 2), 0)
+            ) / len;
 
-            if(curRelDist < minDist._distance){
-                return {"_label": label, "_distance": curRelDist};
-            }else{
+            if (curRelDist < minDist._distance) {
+                return { "_label": label, "_distance": curRelDist };
+            } else {
                 return minDist;
             }
-            
-        }, {"_label": "Unknown", "_distance": 1.0});
+
+        }, { "_label": "Unknown", "_distance": 1.0 });
         result._distance *= 10;
         return result;
     }
 
+    static resultObject = {
+        inputImg: null,
+        info: null
+    };
+
     async faceRecognition() {
+        console.group('faceRecognition');
+        Result.disableButtons(true);
+
         const image = await faceapi.bufferToImage(this.state.file);
         let detections = null;
-        let result = null;
+        let results = null;
 
-        if(this.state.algorithm === Algorithm.ADVANCED) {
-            detections = await faceAPI.getDetections(image);
-        }else{
-            detections = await faceAPI.getDetections(image, false);
+        if (this.state.algorithm === Algorithm.ADVANCED) {
+            detections = await faceAPI.getDetectionsWithLogs(image);
+        } else {
+            detections = await faceAPI.getDetectionsWithLogs(image, false);
         }
-
-        console.log(detections);
 
         if (detections.length === 0) {
             console.log("there is no face on a picture");
@@ -132,44 +139,70 @@ class Upload extends React.Component {
                 resultCode: ResultCode.ERROR_NO_FACE
             });
             App.hideById("spinner");
+            console.groupEnd();
+            Result.disableButtons(false);
 
             return;
         }
         else {
+            detections = detections.sort((a, b) => (a.alignedRect._box._x - b.alignedRect._box._x));
+
             console.log('here info goes --------');
             console.log(detections);
-            if (detections.length === 1) {
-                if(this.state.algorithm === Algorithm.ADVANCED){
-                    result = this.state.faceMatcher.findBestMatch(detections[0].descriptor);
-                }else{
-                    result = this.faceRecognitionNaive(detections[0],JSON_PROFILE_LAND);
-                }
-                console.log(result._label, result._distance);
-                console.log(JSON_PROFILE_DESC[result._label]);
-            }
-            else {
-                if(this.state.algorithm === Algorithm.ADVANCED){
-                    result = detections.map(d => this.state.faceMatcher.findBestMatch(d.descriptor));
-                }else{
-                    result = detections.map(d => this.faceRecognitionNaive(d,JSON_PROFILE_LAND));
-                }
-                console.log(result);
-                console.log(JSON_PROFILE_DESC[result[0]._label]);
-                return;
+
+            if (this.state.algorithm === Algorithm.ADVANCED) {
+                results = detections.map(d => this.state.faceMatcher.findBestMatch(d.descriptor));
+            } else {
+                results = detections.map(d => this.faceRecognitionNaive(d, JSON_PROFILE_LAND));
             }
         }
 
-        let outputImage = require(`../../resourсes/labeled_images/${result._label}.jpg`);
-        let outputName = result._label.replace(/\s\d$/, '');
+        let inputImg = new Image();
+        inputImg.src = URL.createObjectURL(this.state.file);
 
-        App.hideById("spinner");
-        App.showById("progress");
-        Result.upload({
-            inputSrc: URL.createObjectURL(this.state.file),
-            outputSrc: outputImage,
-            originalName: outputName,
-            distance: result._distance,
-        });
+        inputImg.onload = () => {
+            Upload.resultObject = {
+                inputImg: inputImg,
+                info: []
+            };
+
+            let imgs = results.map((result) => {
+                let outputImg = new Image();
+                outputImg.src = require(`../../resourсes/labeled_images/${result._label}.jpg`);
+
+                return outputImg;
+            });
+
+            function imgIsLoaded(img, i) {
+                return new Promise((resolve) => {
+                    img.onload = () => {
+                        Upload.resultObject.info.push({
+                            inputBox: {
+                                x: detections[i].alignedRect._box._x,
+                                y: detections[i].alignedRect._box._y,
+                                width: detections[i].alignedRect._box._width,
+                                height: detections[i].alignedRect._box._height
+                            },
+
+                            outputName: results[i]._label.replace(/\s\d$/, ''),
+                            outputImg: img,
+                            distance: results[i]._distance
+                        });
+
+                        resolve();
+                    };
+                });
+            }
+
+            Promise.all(imgs.map(imgIsLoaded)).then(() => {
+                console.groupEnd();
+                App.hideById("spinner");
+                App.showById("progress");
+                Result.disableButtons(false);
+
+                Result.upload();
+            });
+        };
     }
 
     async handleChange(event) {
@@ -183,6 +216,10 @@ class Upload extends React.Component {
         await this.setState({
             file: null
         });
+        Upload.resultObject = {
+            inputImg: null,
+            info: null
+        };
 
         if (this.fileInputRef.current.files.length !== 1) {
             this.setErrorOnCard();
@@ -206,7 +243,7 @@ class Upload extends React.Component {
             cardHeaderUpload.className = "card-header bg-success";
 
             this.setState({
-                resultCode: ResultCode.SUCCESS
+                resultCode: ResultCode.SUCCESS_UPLOAD
             }, this.faceRecognition);
         }
         else {
@@ -223,8 +260,8 @@ class Upload extends React.Component {
         this.setState({
             algorithm: Algorithm.NAIVE
         }, () => {
-            if(this.state.file) {
-                this.faceRecognition()
+            if (this.state.resultCode === ResultCode.SUCCESS_UPLOAD) {
+                this.faceRecognition();
             }
         });
     }
@@ -233,8 +270,8 @@ class Upload extends React.Component {
         this.setState({
             algorithm: Algorithm.ADVANCED
         }, () => {
-            if(this.state.file) {
-                this.faceRecognition()
+            if (this.state.resultCode === ResultCode.SUCCESS_UPLOAD) {
+                this.faceRecognition();
             }
         });
     }
@@ -250,7 +287,6 @@ class Upload extends React.Component {
                     <div className="card-body">
                         <div className="container">
                             <div className="row d-flex justify-content-center">
-                                {/* px */}
                                 <div className="col-12 px-1">
                                     <div className="custom-file">
                                         <input type="file" className="custom-file-input" id="customFile"
