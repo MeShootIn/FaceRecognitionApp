@@ -1,6 +1,6 @@
 import App from "../app";
 
-
+/** Class containing localized text */
 class Content {
     static Languages = {
         EN: 0,

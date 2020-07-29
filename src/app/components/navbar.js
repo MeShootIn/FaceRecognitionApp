@@ -15,7 +15,6 @@ class Navbar extends React.Component {
         }
     }
 
-    // What is navbar-toggler?
     render() {
         return (
             <nav className="navbar navbar-expand navbar-dark bg-dark">

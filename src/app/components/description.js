@@ -1,7 +1,11 @@
 import React from "react";
 import Content from "./content";
 
-
+/**
+ * Component describing the web application
+ * 
+ * @param {Content.Language} props.language - localization parameter
+ */
 export default function Description(props) {
     return (
         <div className="d-flex justify-content-center">
