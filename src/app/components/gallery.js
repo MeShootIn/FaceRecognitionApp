@@ -29,18 +29,16 @@ class Gallery extends React.Component {
 
     render() {
         return (
-            <div className="container col-11 col-sm-8 col-md-5 py-3 my-3">
+            <div className="container col-11 col-sm-9 col-md-8 col-xl-6 py-3 my-3">
                 <h2 className="text-center">{Content.gallery()}</h2>
 
                 <div id="carousel" className="carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
                         {
-                            this.state.dataset.map((elem, i) => {
-                                return (
-                                    <CarouselItem key={i} src={elem.src} celebrityName={elem.celebrityName}
-                                        active={(i === 0) ? "true" : "false"} />
-                                );
-                            })
+                            this.state.dataset.map((elem, i) =>
+                                <CarouselItem key={i} src={elem.src} celebrityName={elem.celebrityName}
+                                    active={(i === 0) ? "true" : "false"} />
+                            )
                         }
                     </div>
 
@@ -66,7 +64,6 @@ class CarouselItem extends React.Component {
                 <img src={this.props.src} className="d-block w-100 rounded" alt={Content.celebrityName(this.props.celebrityName)} />
 
                 <div className="carousel-caption">
-                    {/* потом добавить перевод */}
                     <h5>{Content.celebrityName(this.props.celebrityName)}</h5>
                 </div>
             </div>

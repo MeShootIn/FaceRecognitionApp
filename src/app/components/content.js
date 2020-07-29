@@ -48,6 +48,13 @@ class Content {
         ]);
     }
 
+    static uploadYourPicture() {
+        return Content.content([
+            "Upload your picture",
+            "Загрузите ваше изображение"
+        ]);
+    }
+
     static uploadButton() {
         return Content.content([
             "Upload",
@@ -55,10 +62,24 @@ class Content {
         ]);
     }
 
-    static uploadYourPicture() {
+    static algorithm() {
         return Content.content([
-            "Upload your picture",
-            "Загрузите ваше изображение"
+            "Comparison algorithm",
+            "Алгоритм сравнения"
+        ]);
+    }
+
+    static advanced() {
+        return Content.content([
+            "Advanced",
+            "Продвинутый"
+        ]);
+    }
+
+    static naive() {
+        return Content.content([
+            "Naive",
+            "Наивный"
         ]);
     }
 
@@ -87,13 +108,6 @@ class Content {
         return Content.content([
             "No faces were found in the photo",
             "Не обнаружено ни одного лица на фотографии"
-        ]);
-    }
-
-    static errorFaceCount() {
-        return Content.content([
-            "There should be only ONE face in the photo",
-            "На фотографии должно быть только ОДНО лицо"
         ]);
     }
 

@@ -12,7 +12,7 @@ import * as faceapi from 'face-api.js';
 // const USE_TINY_MODEL = true;
 const DISTANCE_THRESHOLD = 0.9999
 const MIN_CONFIDANCE_DETECTION = 0.2
-const MAX_FACES_DETECTION = 7
+const MAX_FACES_DETECTION = 15
 
 // ********************************************************
 // Class
@@ -45,7 +45,7 @@ export async function createMatcher(faceProfile) {
   return faceMatcher;
 }
 
-export async function getDetections(image) {
+export async function getDetectionsWithLogs(image, withDescriptor=true) {
   const options = new faceapi.SsdMobilenetv1Options({ minConfidence: MIN_CONFIDANCE_DETECTION , 
     maxResults: MAX_FACES_DETECTION });
     let detections = null;
@@ -59,47 +59,38 @@ export async function getDetections(image) {
   //   .withFaceLandmarks().withFaceDescriptors();
   // }
   console.log('face-api start detect faces...');
+  if(withDescriptor){
     detections = await faceapi.detectAllFaces(image, options)
     .withFaceLandmarks().withFaceDescriptors();
+  }else{
+    detections = await faceapi.detectAllFaces(image, options)
+    .withFaceLandmarks();
+  }  
   console.log('face-api completed face detection.');    
   return detections;
 }
 
-// export function loadLabeledImages() {
-//   const labels = ['Black Widow', 'Captain America', 'Captain Marvel', 'Hawkeye', 'Jim Rhodes', 'Thor', 'Tony Stark']
-//   return Promise.all(
-//     labels.map(async label => {
-//       const descriptions = []
-//       for (let i = 1; i <= 2; i++) {
-//         const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/WebDevSimplified/Face-Recognition-JavaScript/master/labeled_images/${label}/${i}.jpg`)
-//         // console.log(img)
-//         const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-//         console.log(detections)
-//         console.log(label)
-//         descriptions.push(detections.descriptor)
-//       }
-//       return new faceapi.LabeledFaceDescriptors(label, descriptions)
-//     })
-//   )
-// }
+export async function getDetections(image, withDescriptor=true) {
+  const options = new faceapi.SsdMobilenetv1Options({ minConfidence: MIN_CONFIDANCE_DETECTION , 
+    maxResults: MAX_FACES_DETECTION });
+    let detections = null;
+  // if(IsSingleFace){
+  //   detections = await faceapi.detectSingleFace(image, options)
+  //   .withFaceLandmarks().withFaceDescriptor();
+  // }else{
+  //   detections = await faceapi.detectAllFaces(image, options)
+  //   .withFaceLandmarks().withFaceDescriptors();
+  // }
+  if(withDescriptor){
+    detections = await faceapi.detectAllFaces(image, options)
+    .withFaceLandmarks().withFaceDescriptors();
+  }else{
+    detections = await faceapi.detectAllFaces(image, options)
+    .withFaceLandmarks();
+  }  
+  return detections;
+}
 
-// export function loadFaceMatcher(labeledFaceDescriptors){
-//   return new faceapi.FaceMatcher(labeledFaceDescriptors, DISTANCE_THRESHOLD)
-// }
-
-
-// export function loadLabeledImages(labeledImages){
-//   return Promise.all(
-//     labeledImages.map(async labelWithImages => {
-//       const descriptions = [];
-//       labelWithImages.canvases.forEach(async imgCanvas => {
-//         const detections = await faceapi.detectSingleFace(imgCanvas).withFaceLandmarks().withFaceDescriptor();
-//         descriptions.push(detections.descriptor);
-//       });
-//       return new faceapi.LabeledFaceDescriptors(labelWithImages.label, descriptions)
-//     })
-//   )
-// }
 
 //ORIGINAL, OLD VERSION
 
