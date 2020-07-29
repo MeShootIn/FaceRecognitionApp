@@ -29,7 +29,7 @@ class Gallery extends React.Component {
 
     render() {
         return (
-            <div className="container col-11 col-sm-8 col-md-5 py-3 my-3">
+            <div className="container col-11 col-sm-9 col-md-8 col-xl-6 py-3 my-3">
                 <h2 className="text-center" id="gallery-title">{Content.gallery.title[this.props.language]}</h2>
 
                 <div id="carousel" className="carousel slide" data-ride="carousel">
