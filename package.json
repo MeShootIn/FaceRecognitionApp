@@ -1,23 +1,23 @@
 {
-  "name": "face_react",
-  "fullName": "Face detect demo",
-  "description": "This is adaptation of face-api to ReactJS project",
+  "name": "series_face",
   "version": "0.1.0",
-  "author": "Vlad",
   "year": "2020",
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@tensorflow/tfjs-node": "^1.7.4",
+    "@tensorflow/tfjs-node": "^1.5.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.5.0",
+    "canvas": "^2.6.1",
     "face-api.js": "^0.22.2",
+    "jquery": "1.9.1",
+    "node-fetch": "latest",
     "react": "^16.13.1",
     "react-bootstrap": "^1.3.0",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.3.0"
+    "react-scripts": "3.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

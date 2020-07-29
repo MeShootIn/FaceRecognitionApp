@@ -30,13 +30,13 @@ class Gallery extends React.Component {
     render() {
         return (
             <div className="container col-11 col-sm-9 col-md-8 col-xl-6 py-3 my-3">
-                <h2 className="text-center">{Content.gallery()}</h2>
+                <h2 className="text-center" id="gallery-title">{Content.gallery.title[this.props.language]}</h2>
 
                 <div id="carousel" className="carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
                         {
                             this.state.dataset.map((elem, i) =>
-                                <CarouselItem key={i} src={elem.src} celebrityName={elem.celebrityName}
+                                <CarouselItem key={i} src={elem.src} celebrityName={elem.celebrityName} language={this.props.language}
                                     active={(i === 0) ? "true" : "false"} />
                             )
                         }
@@ -44,12 +44,12 @@ class Gallery extends React.Component {
 
                     <a className="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="sr-only">{Content.previous()}</span>
+                        <span className="sr-only">{Content.buttons.previous[this.props.language]}</span>
                     </a>
 
                     <a className="carousel-control-next" href="#carousel" role="button" data-slide="next">
                         <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="sr-only">{Content.next()}</span>
+                        <span className="sr-only">{Content.buttons.next[this.props.language]}</span>
                     </a>
                 </div>
             </div>
@@ -61,10 +61,10 @@ class CarouselItem extends React.Component {
     render() {
         return (
             <div className={"carousel-item" + ((this.props.active === "true") ? " active" : "")}>
-                <img src={this.props.src} className="d-block w-100 rounded" alt={Content.celebrityName(this.props.celebrityName)} />
+                <img src={this.props.src} className="d-block w-100 rounded" alt={Content.celebrityNameNew(this.props.celebrityName, this.props.language)} />
 
                 <div className="carousel-caption">
-                    <h5>{Content.celebrityName(this.props.celebrityName)}</h5>
+                    <h5>{Content.celebrityNameNew(this.props.celebrityName, this.props.language)}</h5>
                 </div>
             </div>
         );
