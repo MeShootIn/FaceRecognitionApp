@@ -23,8 +23,8 @@ export function EuclideanDistance(face_1, face_2) {
   let diff;
 
   for (let i = 0; i < len; ++i) {
-      diff = face_1[i] - face_2[i];
-      dist += diff * diff;
+    diff = face_1[i] - face_2[i];
+    dist += diff * diff;
   }
 
   return Math.sqrt(dist);
@@ -52,8 +52,10 @@ export async function createMatcher(faceProfile) {
   console.log('face-api create faceMatcher...');
   let names = Object.keys(faceProfile);
   let labeledDescriptors = names.map(
-    name => {let descriptors = faceProfile[name].map(descriptor => new Float32Array(Object.values(descriptor)))
-    return new faceapi.LabeledFaceDescriptors(name,descriptors)}
+    name => {
+      let descriptors = faceProfile[name].map(descriptor => new Float32Array(Object.values(descriptor)))
+      return new faceapi.LabeledFaceDescriptors(name, descriptors)
+    }
   )
 
   // Create face matcher (maximum descriptor distance is 0.5)
@@ -65,34 +67,38 @@ export async function createMatcher(faceProfile) {
   return faceMatcher;
 }
 
-export async function getDetectionsWithLogs(image, withDescriptor=true) {
-  const options = new faceapi.SsdMobilenetv1Options({ minConfidence: MIN_CONFIDANCE_DETECTION , 
-                                                      maxResults: MAX_FACES_DETECTION });
+export async function getDetectionsWithLogs(image, withDescriptor = true) {
+  const options = new faceapi.SsdMobilenetv1Options({
+    minConfidence: MIN_CONFIDANCE_DETECTION,
+    maxResults: MAX_FACES_DETECTION
+  });
   let detections = null;
-  
+
   console.log('face-api start detect faces...');
-  if(withDescriptor){
+  if (withDescriptor) {
     detections = await faceapi.detectAllFaces(image, options)
-    .withFaceLandmarks().withFaceDescriptors();
-  }else{
+      .withFaceLandmarks().withFaceDescriptors();
+  } else {
     detections = await faceapi.detectAllFaces(image, options)
-    .withFaceLandmarks();
-  }  
-  console.log('face-api completed face detection.');    
+      .withFaceLandmarks();
+  }
+  console.log('face-api completed face detection.');
   return detections;
 }
 
-export async function getDetections(image, withDescriptor=true) {
-  const options = new faceapi.SsdMobilenetv1Options({ minConfidence: MIN_CONFIDANCE_DETECTION , 
-                                                      maxResults: MAX_FACES_DETECTION });
+export async function getDetections(image, withDescriptor = true) {
+  const options = new faceapi.SsdMobilenetv1Options({
+    minConfidence: MIN_CONFIDANCE_DETECTION,
+    maxResults: MAX_FACES_DETECTION
+  });
   let detections = null;
 
-  if(withDescriptor){
+  if (withDescriptor) {
     detections = await faceapi.detectAllFaces(image, options)
-    .withFaceLandmarks().withFaceDescriptors();
-  }else{
+      .withFaceLandmarks().withFaceDescriptors();
+  } else {
     detections = await faceapi.detectAllFaces(image, options)
-    .withFaceLandmarks();
-  }  
+      .withFaceLandmarks();
+  }
   return detections;
 }

@@ -170,7 +170,7 @@ class Result extends React.Component {
             showDetails: !state.showDetails
         }), () => {
             if (this.state.showDetails) {
-                if(Upload.resultObject.info.length > 1) {
+                if (Upload.resultObject.info.length > 1) {
                     scrollButtonRow.hidden = false;
                 }
                 percentMatch.innerHTML = this.getCurrentPercent().toFixed(DECIMAL_PLACES);

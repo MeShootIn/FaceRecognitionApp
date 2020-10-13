@@ -15,11 +15,11 @@ faceapi.env.monkeyPatch({ fetch, Canvas, Image, ImageData })
 const data = require('./test_faces.json');
 
 describe('FaceRecognition tests', () => {
-    beforeAll(async () => {
+	beforeAll(async () => {
 		await faceAPI.loadModelsFromDisk();
 		console.log('Models are loaded');
 	});
-	
+
 	for (let label of Object.keys(data.persons)) {
 		console.log(label);
 		it(`${label}:`, async () => {

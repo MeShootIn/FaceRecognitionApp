@@ -6,8 +6,8 @@ import Description from './components/description';
 import Gallery from './components/gallery';
 import Upload from './components/upload';
 import Result from './components/result';
-import Footer from './components/footer';
 import Instruction from './components/instruction';
+import Footer from './components/footer';
 
 
 class App extends React.Component {
@@ -53,13 +53,13 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar switchLanguage={(lang) => this.switchLanguage(lang)}/>
-        <Description language={this.state.language}/>
-        <Gallery language={this.state.language}/>
+        <Navbar switchLanguage={(lang) => this.switchLanguage(lang)} />
+        <Description language={this.state.language} />
+        <Gallery language={this.state.language} />
         <Upload />
         <Result />
-        <Instruction language={this.state.language}/>
-        <Footer language={this.state.language}/>
+        <Instruction language={this.state.language} />
+        <Footer language={this.state.language} />
       </div>
     );
   }

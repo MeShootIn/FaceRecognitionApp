@@ -35,7 +35,7 @@ describe('Footer tests', () => {
 
         test(Content.Languages.EN);
         test(Content.Languages.RU);
-        
+
         expect(
             container.querySelector('[id="copyright"]').textContent
         ).toContain(Content.company.years + ' - ' + Content.company.name);

@@ -6,15 +6,15 @@ class Content {
         EN: 0,
         RU: 1
     };
-    
+
     static HerokuLink = "https://seriesface.herokuapp.com/";
     static Celebrities = require("../../resourсes/dataset.json");
     static AppName = "SeriesFace";
 
     static company = {
-        "name" : "FaceRecognitionTeam",
-        "years" : "2020",
-        "website" : "https://github.com/FaceRecognitionTeam"
+        "name": "FaceRecognitionTeam",
+        "years": "2020",
+        "website": "https://github.com/FaceRecognitionTeam"
     }
 
     static content(contents) {
@@ -24,14 +24,14 @@ class Content {
     static description = [
         "Have you ever imagined yourself as a character in a popular series? What star you could easily replace on " +
         "the set? Find out now! Just upload image of your face and we will show you a character that you looks like.",
-        
+
         "Вы когда-нибудь представляли себя персонажем популярного сериала? Какую звезду Вы могли бы легко заменить " +
-        "на съёмочной площадке? Узнайте сейчас! Просто загрузите изображение своего лица, и мы покажем персонажа, "  +
+        "на съёмочной площадке? Узнайте сейчас! Просто загрузите изображение своего лица, и мы покажем персонажа, " +
         "который выглядит как Вы."
     ];
 
     static gallery = {
-        "title" : [
+        "title": [
             "Gallery",
             "Галерея"
         ]
@@ -190,32 +190,32 @@ class Content {
 
     static instruction = {
         'titles': {
-            "first" : [
+            "first": [
                 "Upload a photo",
                 "Загрузите фотографию"
             ],
 
-            "second" : [
+            "second": [
                 "The system detects the face",
                 "Система распознает лицо"
             ],
 
-            "third" : [
+            "third": [
                 "Enjoy the result!",
                 "Всё готово!"
             ],
         },
 
-        "descriptions" : {
-            "first" : [
+        "descriptions": {
+            "first": [
                 "There should be only one person in the photo. Face recognition accuracy depends on the resolution and " +
                 "quality of a face image.",
-                
+
                 "На фотографии должен быть только один человек. Точность распознавания лица зависит от разрешения и " +
                 "качества изображения лица."
             ],
 
-            "second" : [
+            "second": [
                 "The system recognizes a face and creates a face pattern. She is able to find key components of the face, " +
                 "including eyebrows, eyes, nose, mouth and position.",
 
@@ -223,7 +223,7 @@ class Content {
                 "брови, глаза, нос, рот и положение."
             ],
 
-            "third" : [
+            "third": [
                 "The Neural Network compares the person with celebrity faces and suggests the most similar one.",
                 "Нейронная сеть сравнивает фото человека со знаменитостями и предлагает наиболее похожее."
             ],
@@ -231,7 +231,7 @@ class Content {
     }
 
     static footer = {
-        "share" : [
+        "share": [
             "Tell about us",
             "Расскажите о нас"
         ],
