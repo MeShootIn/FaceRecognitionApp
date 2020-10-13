@@ -1,5 +1,6 @@
-import React from "react";
-import Content from "./content";
+import React from 'react';
+import Content from './content';
+
 
 
 class Gallery extends React.Component {
@@ -36,8 +37,8 @@ class Gallery extends React.Component {
                     <div className="carousel-inner">
                         {
                             this.state.dataset.map((elem, i) =>
-                                <CarouselItem key={i} src={elem.src} celebrityName={elem.celebrityName} language={this.props.language}
-                                    active={(i === 0) ? "true" : "false"} />
+                                <CarouselItem key={i} src={elem.src} celebrityName={elem.celebrityName}
+                                    language={this.props.language} active={(i === 0) ? "true" : "false"} />
                             )
                         }
                     </div>
@@ -61,7 +62,8 @@ class CarouselItem extends React.Component {
     render() {
         return (
             <div className={"carousel-item" + ((this.props.active === "true") ? " active" : "")}>
-                <img src={this.props.src} className="d-block w-100 rounded" alt={Content.celebrityNameNew(this.props.celebrityName, this.props.language)} />
+                <img src={this.props.src} className="d-block w-100 rounded"
+                    alt={Content.celebrityNameNew(this.props.celebrityName, this.props.language)} />
 
                 <div className="carousel-caption">
                     <h5>{Content.celebrityNameNew(this.props.celebrityName, this.props.language)}</h5>

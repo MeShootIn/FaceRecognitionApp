@@ -1,19 +1,14 @@
-import React from "react";
-import Content from "./content";
-import * as faceAPI from "../faceapi";
+import React from 'react';
+import Content from './content';
+import * as faceAPI from '../faceapi';
 import * as faceapi from 'face-api.js';
-import App from "../app";
-import Upload from "./upload";
+import App from '../app';
+import Upload from './upload';
 
 
 
 const DECIMAL_PLACES = 2;
 const T = 1000;
-
-/**
- * лагает this.move + остановка при новом ввызове update
- * сделать this.state.scrolled: bool для отмены this.move через setState
- */
 
 class Result extends React.Component {
     constructor(props) {
@@ -36,12 +31,14 @@ class Result extends React.Component {
     }
 
     static upload() {
-        let uploadButtonHidden = document.getElementById("uploadButtonHidden");
+        let uploadButtonHidden = document.getElementById('uploadButtonHidden');
         uploadButtonHidden.click();
     }
 
     async handleClickHidden() {
-        let scrollButtonRow = document.getElementById("scrollButtonRow");
+        let [buttonPrevFace, buttonNextFace] = [
+            document.getElementById('buttonPrevFace'), document.getElementById('buttonNextFace')
+        ];
 
         await this.setState({
             showDetails: false,
@@ -49,14 +46,16 @@ class Result extends React.Component {
         });
 
         if (Upload.resultObject.info.length === 1) {
-            scrollButtonRow.hidden = true;
+            buttonPrevFace.hidden = true;
+            buttonNextFace.hidden = true;
         }
         else {
-            scrollButtonRow.hidden = false;
+            buttonPrevFace.hidden = false;
+            buttonNextFace.hidden = false;
         }
 
-        App.showById("result");
-        App.scrollToAnchor("result");
+        App.showById('result');
+        App.scrollToAnchor('result');
         this.move(this.getCurrentPercent());
     }
 
@@ -65,10 +64,11 @@ class Result extends React.Component {
     }
 
     drawImg(img, canvas) {
-        let ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext('2d');
 
         if (!ctx) {
             alert(Content.errorCanvas());
+
             return;
         }
 
@@ -84,6 +84,7 @@ class Result extends React.Component {
 
         image.onerror = () => {
             alert(Content.errorImageUpload());
+
             return;
         };
     }
@@ -107,8 +108,8 @@ class Result extends React.Component {
 
         Result.disableButtons(true);
 
-        let inputCanvas = document.getElementById("inputCanvas");
-        let outputCanvas = document.getElementById("outputCanvas");
+        let inputCanvas = document.getElementById('inputCanvas');
+        let outputCanvas = document.getElementById('outputCanvas');
 
         this.drawImg(this.getInputImg(), inputCanvas);
         this.drawImg(this.getOutputImg(), outputCanvas);
@@ -126,21 +127,20 @@ class Result extends React.Component {
         const displaySize = { width: img.width, height: img.height };
         faceapi.matchDimensions(canvas, displaySize);
 
-        const detectionsWithLandmarks = (await faceAPI.getDetections(img)).sort((a, b) => (a.alignedRect._box._x - b.alignedRect._box._x));
+        const detectionsWithLandmarks = (await faceAPI.getDetections(img))
+            .sort((a, b) => (a.alignedRect._box._x - b.alignedRect._box._x));
         const resizedResults = faceapi.resizeResults([detectionsWithLandmarks[faceIndex]], displaySize);
         faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
     }
 
     frame(target, t) {
-        let progressBar = document.getElementById("progressBar");
-        let percentMatch = document.getElementById("percentMatch");
+        let progressBar = document.getElementById('progressBar');
+        let percentMatch = document.getElementById('percentMatch');
 
-        function f(t) {
-            return 1 + Math.pow(t - 1, 3);
-        }
+        let f = (t) => 1 + Math.pow(t - 1, 3);
 
         let percent = f(t / T) * target;
-        progressBar.style.width = percent + "%";
+        progressBar.style.width = percent + '%';
 
         if (this.state.showDetails) {
             percentMatch.innerHTML = percent.toFixed(DECIMAL_PLACES);
@@ -157,33 +157,28 @@ class Result extends React.Component {
     }
 
     static disableButtons(value) {
-        ["buttonPrevFace", "buttonNextFace", "naive", "advanced", "buttonDetails"].forEach((buttonId) => {
+        ['buttonPrevFace', 'buttonNextFace', 'naive', 'advanced', 'buttonDetails'].forEach((buttonId) => {
             document.getElementById(buttonId).disabled = value;
-        })
+        });
     }
 
     handleClickDetails() {
-        let percentMatch = document.getElementById("percentMatch");
-        let scrollButtonRow = document.getElementById("scrollButtonRow");
+        let percentMatch = document.getElementById('percentMatch');
 
         this.setState((state) => ({
             showDetails: !state.showDetails
         }), () => {
             if (this.state.showDetails) {
-                if (Upload.resultObject.info.length > 1) {
-                    scrollButtonRow.hidden = false;
-                }
                 percentMatch.innerHTML = this.getCurrentPercent().toFixed(DECIMAL_PLACES);
             }
             else {
-                scrollButtonRow.hidden = true;
                 percentMatch.innerHTML = parseInt(this.getCurrentPercent());
             }
         });
     }
 
     handleClickPrev() {
-        if (document.getElementById("buttonPrevFace").disabled) {
+        if (document.getElementById('buttonPrevFace').disabled) {
             return;
         }
 
@@ -195,7 +190,7 @@ class Result extends React.Component {
     }
 
     handleClickNext() {
-        if (document.getElementById("buttonNextFace").disabled) {
+        if (document.getElementById('buttonNextFace').disabled) {
             return;
         }
 
@@ -214,7 +209,15 @@ class Result extends React.Component {
                 <div className="row pt-3">
                     <div className="col text-center">
                         <h2>
-                            {Content.youLookLike()}<strong>{(Upload.resultObject.info !== null) ? Content.celebrityName(Upload.resultObject.info[this.state.imageIndex].outputName) : null}</strong>{Content.on()}
+                            {Content.youLookLike()}
+                            <strong>
+                                {
+                                    (Upload.resultObject.info !== null) ?
+                                        Content.celebrityName(Upload.resultObject.info[this.state.imageIndex].outputName) :
+                                        null
+                                }
+                            </strong>
+                            {Content.on()}
                         </h2>
                     </div>
                 </div>
@@ -222,7 +225,8 @@ class Result extends React.Component {
                 <div className="row pt-3">
                     <div className="col">
                         <div id="progress" className="progress" hidden>
-                            <div id="progressBar" className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                            <div id="progressBar" className="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                aria-valuemin="0" aria-valuemax="100">
                                 <h2><span className="text-center" id="percentMatch">???</span>%</h2>
                             </div>
                         </div>
@@ -232,15 +236,17 @@ class Result extends React.Component {
                 <div className="row pt-1">
                     <div className="col">
                         <span className="float-right">
-                            <button type="button" id="buttonDetails" className="btn btn-outline-warning btn-lg btn-block" onClick={this.handleClickDetails}>{Content.moreDetails()}</button>
+                            <button type="button" id="buttonDetails" className="btn btn-outline-warning btn-lg btn-block"
+                                onClick={this.handleClickDetails}>{Content.moreDetails()}</button>
                         </span>
                     </div>
                 </div>
 
-                <div className="row d-flex justify-content-center pt-5" id="scrollButtonRow" hidden>
+                <div className="row d-flex justify-content-center pt-5">
                     <div className="col">
                         <span className="float-left">
-                            <button type="button" id="buttonPrevFace" className="btn btn-info btn-lg" onClick={this.handleClickPrev}>
+                            <button type="button" id="buttonPrevFace" className="btn btn-info btn-lg"
+                                onClick={this.handleClickPrev}>
                                 <i className="fas fa-angle-double-left"></i>
                             </button>
                         </span>
@@ -248,7 +254,8 @@ class Result extends React.Component {
 
                     <div className="col">
                         <span className="float-right">
-                            <button type="button" id="buttonNextFace" className="btn btn-info btn-lg" onClick={this.handleClickNext}>
+                            <button type="button" id="buttonNextFace" className="btn btn-info btn-lg"
+                                onClick={this.handleClickNext}>
                                 <i className="fas fa-angle-double-right"></i>
                             </button>
                         </span>

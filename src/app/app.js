@@ -36,7 +36,7 @@ class App extends React.Component {
   static scrollToAnchor(anchor) {
     let elem = document.getElementById(anchor);
     elem.scrollIntoView({
-      behavior: "smooth"
+      behavior: 'smooth'
     });
   }
 

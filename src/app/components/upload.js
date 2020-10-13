@@ -1,19 +1,14 @@
-import React from "react";
-import Content from "./content";
-import * as faceAPI from "../faceapi";
+import React from 'react';
+import Content from './content';
+import * as faceAPI from '../faceapi';
 import * as faceapi from 'face-api.js';
-// import { labels } from "../../resourсes/labels";
-import App from "../app";
-import Result from "./result";
+import App from '../app';
+import Result from './result';
 
 
-// Loading imagies and descriptors of base pics
+
 const JSON_PROFILE_DESC = require('../../resourсes/labeledFaceDescriptors.json');
 const JSON_PROFILE_LAND = require('../../resourсes/labeledFaceLandmarks.json');
-// const imagesDict = {};
-// labels.forEach(label => { imagesDict[label] = require(`../../resourсes/labeled_images/${label}/1.jpg`) });
-//
-
 const ResultCode = {
     INIT: 0,
     SUCCESS_UPLOAD: 1,
@@ -28,21 +23,20 @@ const Algorithm = {
 };
 
 class Upload extends React.Component {
-    static fileTypes = ["image/jpeg", "image/pjpeg", "image/jpg", "image/png"];
-    static fileTypesPrintable = Upload.fileTypes.map(type => type.split("/")[1]);
+    static fileTypes = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/png'];
+    static fileTypesPrintable = Upload.fileTypes.map(type => type.split('/')[1]);
 
     constructor(props) {
         super(props);
-        // Loadings
-        this.loadingDependences = this.loadingDependences.bind(this);
-        this.loadingDependences();
-        //
+
         this.state = {
             faceMatcher: null,
             file: null,
             resultCode: ResultCode.INIT,
             algorithm: Algorithm.ADVANCED
         };
+        this.loadingDependences = this.loadingDependences.bind(this);
+        this.loadingDependences();
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeNaive = this.handleChangeNaive.bind(this);
         this.handleChangeAdvanced = this.handleChangeAdvanced.bind(this);
@@ -50,9 +44,9 @@ class Upload extends React.Component {
     }
 
     setErrorOnCard() {
-        document.getElementById("cardUpload").className = "card border-danger";
-        document.getElementById("cardHeaderUpload").className = "card-header bg-danger";
-        App.scrollToAnchor("cardUploadContainer");
+        document.getElementById('cardUpload').className = 'card border-danger';
+        document.getElementById('cardHeaderUpload').className = 'card-header bg-danger';
+        App.scrollToAnchor('cardUploadContainer');
     }
 
     async loadingDependences() {
@@ -102,13 +96,14 @@ class Upload extends React.Component {
             ) / len;
 
             if (curRelDist < minDist._distance) {
-                return { "_label": label, "_distance": curRelDist };
+                return { '_label': label, '_distance': curRelDist };
             } else {
                 return minDist;
             }
 
-        }, { "_label": "Unknown", "_distance": 1.0 });
+        }, { '_label': 'Unknown', '_distance': 1.0 });
         result._distance *= 10;
+
         return result;
     }
 
@@ -118,7 +113,7 @@ class Upload extends React.Component {
     };
 
     async faceRecognition() {
-        console.group('faceRecognition');
+        console.group('Face recognition');
         Result.disableButtons(true);
 
         const image = await faceapi.bufferToImage(this.state.file);
@@ -132,13 +127,13 @@ class Upload extends React.Component {
         }
 
         if (detections.length === 0) {
-            console.log("there is no face on a picture");
+            console.log('There is no face on a picture');
 
             this.setErrorOnCard();
             this.setState({
                 resultCode: ResultCode.ERROR_NO_FACE
             });
-            App.hideById("spinner");
+            App.hideById('spinner');
             console.groupEnd();
             Result.disableButtons(false);
 
@@ -147,7 +142,6 @@ class Upload extends React.Component {
         else {
             detections = detections.sort((a, b) => (a.alignedRect._box._x - b.alignedRect._box._x));
 
-            console.log('here info goes --------');
             console.log(detections);
 
             if (this.state.algorithm === Algorithm.ADVANCED) {
@@ -196,8 +190,8 @@ class Upload extends React.Component {
 
             Promise.all(imgs.map(imgIsLoaded)).then(() => {
                 console.groupEnd();
-                App.hideById("spinner");
-                App.showById("progress");
+                App.hideById('spinner');
+                App.showById('progress');
                 Result.disableButtons(false);
 
                 Result.upload();
@@ -212,7 +206,7 @@ class Upload extends React.Component {
             return;
         }
 
-        App.hideById("result");
+        App.hideById('result');
         await this.setState({
             file: null
         });
@@ -234,13 +228,13 @@ class Upload extends React.Component {
             file: this.fileInputRef.current.files[0]
         });
 
-        let cardUpload = document.getElementById("cardUpload");
-        let cardHeaderUpload = document.getElementById("cardHeaderUpload");
-        App.showById("spinner");
+        let cardUpload = document.getElementById('cardUpload');
+        let cardHeaderUpload = document.getElementById('cardHeaderUpload');
+        App.showById('spinner');
 
         if (Upload.fileTypes.includes(this.state.file.type)) {
-            cardUpload.className = "card border-success";
-            cardHeaderUpload.className = "card-header bg-success";
+            cardUpload.className = 'card border-success';
+            cardHeaderUpload.className = 'card-header bg-success';
 
             this.setState({
                 resultCode: ResultCode.SUCCESS_UPLOAD
@@ -248,7 +242,7 @@ class Upload extends React.Component {
         }
         else {
             this.setErrorOnCard();
-            App.hideById("spinner");
+            App.hideById('spinner');
 
             this.setState({
                 resultCode: ResultCode.ERROR_FILE_TYPE
@@ -291,7 +285,8 @@ class Upload extends React.Component {
                                     <div className="custom-file">
                                         <input type="file" className="custom-file-input" id="customFile"
                                             ref={this.fileInputRef} onChange={this.handleChange} accept={Upload.fileTypes} />
-                                        <label className="custom-file-label" htmlFor="customFile" id="customLabel" data-browse={Content.uploadButton()}>
+                                        <label className="custom-file-label" htmlFor="customFile" id="customLabel"
+                                            data-browse={Content.uploadButton()}>
                                             {(this.state.file) ? this.state.file.name : Content.chooseFile()}
                                         </label>
                                     </div>
@@ -305,14 +300,16 @@ class Upload extends React.Component {
 
                                 <div className="col-12">
                                     <div className="custom-control custom-radio float-right">
-                                        <input type="radio" id="naive" name="customRadio" className="custom-control-input" onChange={this.handleChangeNaive} />
+                                        <input type="radio" id="naive" name="customRadio" className="custom-control-input"
+                                            onChange={this.handleChangeNaive} />
                                         <label className="custom-control-label" htmlFor="naive">{Content.naive()}</label>
                                     </div>
                                 </div>
 
                                 <div className="col-12">
                                     <div className="custom-control custom-radio float-right">
-                                        <input type="radio" defaultChecked id="advanced" name="customRadio" className="custom-control-input" onChange={this.handleChangeAdvanced} />
+                                        <input type="radio" defaultChecked id="advanced" name="customRadio"
+                                            className="custom-control-input" onChange={this.handleChangeAdvanced} />
                                         <label className="custom-control-label" htmlFor="advanced">{Content.advanced()}</label>
                                     </div>
                                 </div>
